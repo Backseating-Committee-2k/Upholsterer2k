@@ -10,7 +10,7 @@ char const* token_type_to_string(TokenType token_type) {
         #undef X
         default:
             assert(false && "unreachable");
-            break;
+            return NULL;
     }
 }
 
