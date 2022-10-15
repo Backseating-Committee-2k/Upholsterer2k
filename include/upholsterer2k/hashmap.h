@@ -6,6 +6,7 @@ extern "C" {
 
 #include "upholsterer2k/string_view.h"
 #include <stddef.h>
+#include <assert.h>
 #include <stdint.h>
 
 #define CREATE_HASHMAP_DECLARATION(name, element_type, prefix) \
@@ -28,7 +29,8 @@ void prefix##_free(name* self);
 
 uint64_t hash_string_view(StringView string_view);
 
-_Static_assert(sizeof(size_t) == 8, "platform not supported");
+static_assert(sizeof(size_t) == 8, "platform not supported");
+
 extern size_t const powers_of_two[64];
 
 #define CREATE_HASHMAP_DEFINITION(name, element_type, prefix) \
