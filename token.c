@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <ctype.h>
-#include "token.h"
-#include "string_view_utils.h"
+#include "upholsterer2k/token.h"
+#include "upholsterer2k/string_view_utils.h"
 
 char const* token_type_to_string(TokenType token_type) {
     switch (token_type) {

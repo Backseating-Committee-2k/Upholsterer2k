@@ -3,11 +3,11 @@
 #include <errno.h>
 #include <string.h>
 #include <assert.h>
-#include "lexer.h"
-#include "string_view.h"
-#include "source_file.h"
-#include "opcodes.h"
-#include "parser.h"
+#include "upholsterer2k/lexer.h"
+#include "upholsterer2k/string_view.h"
+#include "upholsterer2k/source_file.h"
+#include "upholsterer2k/opcodes.h"
+#include "upholsterer2k/parser.h"
 
 #ifdef _WIN32
 #include <fcntl.h>

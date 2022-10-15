@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdbool.h>
-#include "lexer.h"
-#include "error.h"
-#include "constants.h"
+#include "upholsterer2k/lexer.h"
+#include "upholsterer2k/error.h"
+#include "upholsterer2k/constants.h"
 
 typedef enum {
     DECIMAL,

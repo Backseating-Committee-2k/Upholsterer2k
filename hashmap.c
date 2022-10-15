@@ -1,4 +1,4 @@
-#include "hashmap.h"
+#include "upholsterer2k/hashmap.h"
 
 #include <stdlib.h>
 #include <stdbool.h>

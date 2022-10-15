@@ -1,8 +1,12 @@
 #pragma once
 
-#include "types.h"
-#include "string_view.h"
-#include "hashmap.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "upholsterer2k/types.h"
+#include "upholsterer2k/string_view.h"
+#include "upholsterer2k/hashmap.h"
 #include <stddef.h>
 #include <stdbool.h>
 
@@ -39,3 +43,7 @@ void get_constant_value(StringView abbreviation,
                         uint64_t* out_value,
                         ConstantsMap const* constants);
 void fill_constants_map(ConstantsMap* constants_map);
+
+#ifdef __cplusplus
+}
+#endif

@@ -21,20 +21,21 @@ if (MSVC)
 endif ()
 
 set(PUBLIC_HEADER_FILES
-    "include/string_view.h"
-    "include/string_view_utils.h"
-    "include/token.h"
-    "include/types.h"
-    "include/token_vector.h"
-    "include/lexer.h"
-    "include/source_file.h"
-    "include/error.h"
-    "include/opcode_specification.h"
-    "include/opcodes.h"
-    "include/vector.h"
-    "include/parser.h"
-    "include/constants.h"
-    "include/hashmap.h"
+    "include/upholsterer2k/upholsterer2k.h"
+    "include/upholsterer2k/string_view.h"
+    "include/upholsterer2k/string_view_utils.h"
+    "include/upholsterer2k/token.h"
+    "include/upholsterer2k/types.h"
+    "include/upholsterer2k/token_vector.h"
+    "include/upholsterer2k/lexer.h"
+    "include/upholsterer2k/source_file.h"
+    "include/upholsterer2k/error.h"
+    "include/upholsterer2k/opcode_specification.h"
+    "include/upholsterer2k/opcodes.h"
+    "include/upholsterer2k/vector.h"
+    "include/upholsterer2k/parser.h"
+    "include/upholsterer2k/constants.h"
+    "include/upholsterer2k/hashmap.h"
 )
 
 set(FILES

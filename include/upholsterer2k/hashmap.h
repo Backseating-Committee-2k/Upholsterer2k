@@ -1,6 +1,10 @@
 #pragma once
 
-#include "string_view.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "upholsterer2k/string_view.h"
 #include <stddef.h>
 #include <stdint.h>
 
@@ -121,3 +125,7 @@ void prefix##_free(name* self) { \
     self->capacity = 0; \
     self->size = 0; \
 }
+
+#ifdef __cplusplus
+}
+#endif

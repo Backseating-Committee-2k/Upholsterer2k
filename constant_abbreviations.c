@@ -1,4 +1,4 @@
-#include "constants.h"
+#include "upholsterer2k/constants.h"
 #include <stddef.h>
 
 ConstantAbbreviation g_constant_abbreviations[] = {
