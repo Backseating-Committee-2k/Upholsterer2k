@@ -9,6 +9,10 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
+# static runtime library
+set_property(TARGET ${target} PROPERTY
+MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 if (MSVC)
     # enable code analysis
     set_property(GLOBAL PROPERTY VS_GLOBAL_EnableCppCoreCheck true)
