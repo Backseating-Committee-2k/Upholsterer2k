@@ -43,8 +43,8 @@ def main():
             with open(output_filename, 'w') as out_file:
                 out_file.write("""// auto-generated with opcodes2c.py
 
-#include "opcodes.h"
-#include "string_view.h"
+#include "upholsterer2k/opcodes.h"
+#include "upholsterer2k/string_view.h"
 
 OpcodeList opcode_specifications(void) {\n""")
                 out_file.write(f"    size_t const num_opcodes = {num_opcodes};\n")

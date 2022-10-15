@@ -1,4 +1,4 @@
-#include "error.h"
+#include "upholsterer2k/error.h"
 #include <stdio.h>
 #include <assert.h>
 

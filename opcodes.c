@@ -1,7 +1,7 @@
 // auto-generated with opcodes2c.py
 
-#include "opcodes.h"
-#include "string_view.h"
+#include "upholsterer2k/opcodes.h"
+#include "upholsterer2k/string_view.h"
 
 OpcodeList opcode_specifications(void) {
     size_t const num_opcodes = 88;

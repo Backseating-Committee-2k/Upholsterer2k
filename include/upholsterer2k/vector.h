@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -49,3 +53,7 @@ void prefix##_free(name* const vector) { \
     vector->size = 0; \
     vector->capacity = 0; \
 }
+
+#ifdef __cplusplus
+}
+#endif

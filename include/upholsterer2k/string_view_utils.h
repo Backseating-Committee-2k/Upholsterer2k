@@ -1,8 +1,12 @@
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdbool.h>
-#include "types.h"
-#include "string_view.h"
+#include "upholsterer2k/types.h"
+#include "upholsterer2k/string_view.h"
 
 typedef enum {
     BASE_DECIMAL = 10,
@@ -12,3 +16,7 @@ typedef enum {
 
 void parse_word(StringView string_view, bool* out_success, Word* out_result);
 void parse_word_with_base(StringView const string_view, Base const base, bool* out_success, Word* out_result);
+
+#ifdef __cplusplus
+}
+#endif

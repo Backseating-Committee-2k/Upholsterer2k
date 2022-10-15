@@ -1,8 +1,8 @@
-#include "parser.h"
-#include "error.h"
-#include "types.h"
-#include "constants.h"
-#include "hashmap.h"
+#include "upholsterer2k/parser.h"
+#include "upholsterer2k/error.h"
+#include "upholsterer2k/types.h"
+#include "upholsterer2k/constants.h"
+#include "upholsterer2k/hashmap.h"
 #include <stdlib.h>
 #include <assert.h>
 #include <inttypes.h>
