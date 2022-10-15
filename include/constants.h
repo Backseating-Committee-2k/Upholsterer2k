@@ -33,11 +33,9 @@ extern ConstantAbbreviation g_constant_abbreviations[];
 
 char const* find_constant_name_by_abbreviation(StringView abbreviation);
 void get_constant(StringView abbreviation, bool* out_found, Constant** out_constant);
-void get_constant_value(
-    StringView abbreviation,
-    ConstantType type,
-    bool* out_found,
-    uint64_t* out_value,
-    ConstantsMap const* constants
-);
+void get_constant_value(StringView abbreviation,
+                        ConstantType type,
+                        bool* out_found,
+                        uint64_t* out_value,
+                        ConstantsMap const* constants);
 void fill_constants_map(ConstantsMap* constants_map);
