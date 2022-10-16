@@ -29,6 +29,62 @@ typedef struct {
     Opcode opcode;                     // e.g. 0x0000
 } OpcodeSpecification;
 
+#define MNEMONICS               \
+    X(COPY)                     \
+    X(COPY_BYTE)                \
+    X(COPY_HALFWORD)            \
+    X(OFFSET_COPY)              \
+    X(OFFSET_COPY_BYTE)         \
+    X(OFFSET_COPY_HALFWORD)     \
+    X(HALT)                     \
+    X(ADD)                      \
+    X(ADD_CARRY)                \
+    X(SUB)                      \
+    X(SUB_CARRY)                \
+    X(MULT)                     \
+    X(DIVMOD)                   \
+    X(AND)                      \
+    X(OR)                       \
+    X(XOR)                      \
+    X(NOT)                      \
+    X(LSHIFT)                   \
+    X(RSHIFT)                   \
+    X(COMP)                     \
+    X(PUSH)                     \
+    X(POP)                      \
+    X(CALL)                     \
+    X(RETURN)                   \
+    X(JUMP)                     \
+    X(JUMP_EQ)                  \
+    X(JUMP_GT)                  \
+    X(JUMP_LT)                  \
+    X(JUMP_GTEQ)                \
+    X(JUMP_LTEQ)                \
+    X(JUMP_ZERO)                \
+    X(JUMP_NOT_ZERO)            \
+    X(JUMP_CARRY)               \
+    X(JUMP_NOT_CARRY)           \
+    X(JUMP_DIVIDE_BY_ZERO)      \
+    X(JUMP_NOT_DIVIDE_BY_ZERO)  \
+    X(NOOP)                     \
+    X(GET_KEY)                  \
+    X(POLL_TIME)                \
+    X(SWAP)                     \
+    X(DRAW_BUFFER_ADDR)         \
+    X(POLL_CYCLES)              \
+    X(DUMP_REGISTERS)           \
+    X(DUMP_MEMORY)              \
+    X(ASSERT)                   \
+    X(DEBUG_BREAK)              \
+    X(PRINT)                    \
+    X(COMP_EQ)                  \
+    X(COMP_NEQ)                 \
+    X(COMP_GT)                  \
+    X(COMP_GE)                  \
+    X(COMP_LT)                  \
+    X(COMP_LE)                  \
+    X(CHECKPOINT)
+
 #define OPCODE_MAPPINGS                                        \
     X(MoveRegisterImmediate, COPY)                             \
     X(MoveRegisterAddress, COPY)                               \
