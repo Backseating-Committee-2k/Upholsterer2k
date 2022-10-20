@@ -57,6 +57,7 @@ set(FILES
     "constant_abbreviations.c"
     "constants_helpers.c"
     "hashmap.c"
+    "upholsterer2k.c"
     ${PUBLIC_HEADER_FILES}
 )
 
