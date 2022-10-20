@@ -8,6 +8,7 @@
 #include "upholsterer2k/source_file.h"
 #include "upholsterer2k/opcodes.h"
 #include "upholsterer2k/parser.h"
+#include "upholsterer2k/upholsterer2k.h"
 
 #ifdef _WIN32
 #include <fcntl.h>
@@ -16,8 +17,8 @@
 
 typedef struct {
     bool valid;
-    char const * source_file_name;
-    char const * instruction_map_file_name;
+    char const* source_file_name;
+    char const* instruction_map_file_name;
 } Arguments;
 
 void read_whole_file(FILE* const file, char** contents, size_t* length) {
@@ -26,7 +27,7 @@ void read_whole_file(FILE* const file, char** contents, size_t* length) {
     char* buffer = NULL;
     int current_char;
     while ((current_char = fgetc(file)) != EOF) {
-        if (size == capacity) { // needs to resize
+        if (size == capacity) {// needs to resize
             capacity = capacity == 0 ? 1 : 2 * capacity;
             char* const new_buffer = realloc(buffer, capacity);
             if (new_buffer == NULL) {
@@ -37,7 +38,7 @@ void read_whole_file(FILE* const file, char** contents, size_t* length) {
             }
             buffer = new_buffer;
         }
-        buffer[size] = (char)current_char;
+        buffer[size] = (char) current_char;
         ++size;
     }
     *contents = buffer;
@@ -48,14 +49,7 @@ void write_machine_code(ByteVector machine_code, FILE* const file) {
     fwrite(machine_code.data, sizeof(uint8_t), machine_code.size, file);
 }
 
-void check_opcodes(OpcodeList const opcodes) {
-    for (size_t i = 0; i < opcodes.num_specifications; ++i) {
-        OpcodeSpecification const * const specification = &opcodes.specifications[i];
-        assert(specification->mnemonic.length > 0 && "unknown opcode");
-    }
-}
-
-void write_instruction_map(InstructionMapVector instruction_map_vector, char const * const file_name) {
+void write_instruction_map(InstructionMapVector instruction_map_vector, char const* const file_name) {
     FILE* file = fopen(file_name, "w");
     if (!file) {
         fprintf(stderr, "Could not open file %s to write instruction mappings to: %s.\n", file_name, strerror(errno));
@@ -71,7 +65,7 @@ void write_instruction_map(InstructionMapVector instruction_map_vector, char con
     fclose(file);
 }
 
-bool string_starts_with(char const * const string, char const * const prefix) {
+bool string_starts_with(char const* const string, char const* const prefix) {
     return strncmp(prefix, string, strlen(prefix)) == 0;
 }
 
@@ -153,47 +147,37 @@ int main(int argc, char** argv) {
         source = (StringView){ .data = source_data, .length = length };
     }
     SourceFile source_file = {
-        .filename = string_view_from_string(arguments.source_file_name == NULL ? "<stdin>" : arguments.source_file_name),
+        .filename =
+                string_view_from_string(arguments.source_file_name == NULL ? "<stdin>" : arguments.source_file_name),
         .source = source,
     };
 
-    ConstantsMap constants = constants_map_create(16);
-    fill_constants_map(&constants);
+    ByteVector machine_code;
+    InstructionMapVector instruction_map_vector = instruction_map_vector_create();
+    char error_message[512];
+    size_t const buffer_size = sizeof(error_message) / sizeof(error_message[0]);
+    bool const result = bssemble(source_file, arguments.instruction_map_file_name, &machine_code,
+                                 &instruction_map_vector, error_message, buffer_size);
 
-    TokenVector tokens = tokenize(source_file, &constants);
-
-    OpcodeList opcodes = opcode_specifications();
-    check_opcodes(opcodes);
-
-    InstructionMapVector instruction_map_vector;
-    InstructionMapVector* instruction_map_pointer = NULL;
-    if (arguments.instruction_map_file_name != NULL) {
-        instruction_map_vector = instruction_map_vector_create();
-        instruction_map_pointer = &instruction_map_vector;
-    }
-
-    ByteVector machine_code = parse(source_file, tokens, opcodes, &constants, instruction_map_pointer);
-
-    // when in windows, we have to set the mode of stdout to binary because otherwise
-    // every \n will be automatically replaced with \r\n which destroys the generated
-    // binary
+    if (!result) {
+        fprintf(stderr, "%s", error_message);
+    } else {
+        // when in windows, we have to set the mode of stdout to binary because otherwise
+        // every \n will be automatically replaced with \r\n which destroys the generated
+        // binary
 #ifdef _WIN32
-    _setmode(_fileno(stdout), _O_BINARY);
+        _setmode(_fileno(stdout), _O_BINARY);
 #endif
 
-    write_machine_code(machine_code, stdout);
-    if (arguments.instruction_map_file_name != NULL) {
-        write_instruction_map(instruction_map_vector, arguments.instruction_map_file_name);
+        write_machine_code(machine_code, stdout);
+        if (arguments.instruction_map_file_name != NULL) {
+            write_instruction_map(instruction_map_vector, arguments.instruction_map_file_name);
+        }
     }
 
     // cleanup
-    if (instruction_map_pointer != NULL) {
-        instruction_map_vector_free(instruction_map_pointer);
-    }
+    instruction_map_vector_free(&instruction_map_vector);
     byte_vector_free(&machine_code);
-    token_vector_free(&tokens);
-    constants_map_free(&constants);
     free(source_data);
-    free(opcodes.specifications);
-    return EXIT_SUCCESS;
+    return result ? EXIT_SUCCESS : EXIT_FAILURE;
 }

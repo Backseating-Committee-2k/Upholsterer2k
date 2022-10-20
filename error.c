@@ -9,6 +9,7 @@ void error(
     size_t const column,
     size_t squiggly_length
 ) {
+    // TODO: replace with snprintf (see https://en.cppreference.com/w/c/io/fprintf)
     fprintf(
         stderr, "%.*s:%zu:%zu: %s\n",
         (int)source_file.filename.length,
