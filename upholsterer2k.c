@@ -15,6 +15,9 @@ bool bssemble(SourceFile const source_file,
               InstructionMapVector* const out_instruction_map,
               char* const out_error_message_buffer,
               size_t const buffer_size) {
+    (void)out_error_message_buffer;
+    (void)buffer_size;
+
     ConstantsMap constants = constants_map_create(16);
     fill_constants_map(&constants);
 
@@ -23,7 +26,6 @@ bool bssemble(SourceFile const source_file,
     OpcodeList opcodes = opcode_specifications();
     check_opcodes(opcodes);
 
-    InstructionMapVector* instruction_map_pointer = NULL;
     if (instruction_map_file_name != NULL && out_instruction_map != NULL) {
         *out_instruction_map = instruction_map_vector_create();
     }
