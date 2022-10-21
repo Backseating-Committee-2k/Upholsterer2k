@@ -45,11 +45,7 @@ void read_whole_file(FILE* const file, char** contents, size_t* length) {
     *length = size;
 }
 
-void write_machine_code(ByteVector machine_code, FILE* const file) {
-    fwrite(machine_code.data, sizeof(uint8_t), machine_code.size, file);
-}
-
-void write_instruction_map(InstructionMapVector instruction_map_vector, char const* const file_name) {
+void write_instruction_map(UP2K_InstructionMapVector UP2K_instruction_map_vector, char const* const file_name) {
     FILE* file = fopen(file_name, "w");
     if (!file) {
         fprintf(stderr, "Could not open file %s to write instruction mappings to: %s.\n", file_name, strerror(errno));
@@ -57,8 +53,8 @@ void write_instruction_map(InstructionMapVector instruction_map_vector, char con
     }
 
     fprintf(file, "line address\n");
-    for (size_t i = 0; i < instruction_map_vector.size; ++i) {
-        InstructionMap map = instruction_map_vector.data[i];
+    for (size_t i = 0; i < UP2K_instruction_map_vector.size; ++i) {
+        UP2K_InstructionMap map = UP2K_instruction_map_vector.data[i];
         fprintf(file, "%zu %zu\n", map.line, map.address);
     }
 
@@ -87,7 +83,7 @@ Arguments parse_arguments(int argc, char** argv) {
                 ++i;
                 arguments.instruction_map_file_name = argv[i];
             } else {
-                fprintf(stderr, "Error: Switch 'm'/'map' requires a value.\n");
+                fprintf(stderr, "UP2K_error: Switch 'm'/'map' requires a value.\n");
                 arguments.valid = false;
                 return arguments;
             }
@@ -102,7 +98,7 @@ Arguments parse_arguments(int argc, char** argv) {
                 ++i;
                 arguments.instruction_map_file_name = argv[i];
             } else {
-                fprintf(stderr, "Error: Switch 'm'/'map' requires a value.\n");
+                fprintf(stderr, "UP2K_error: Switch 'm'/'map' requires a value.\n");
                 arguments.valid = false;
                 return arguments;
             }
@@ -111,7 +107,7 @@ Arguments parse_arguments(int argc, char** argv) {
             if (arguments.source_file_name == NULL) {
                 arguments.source_file_name = argv[i];
             } else {
-                fprintf(stderr, "Error: Too many arguments.\n");
+                fprintf(stderr, "UP2K_error: Too many arguments.\n");
                 arguments.valid = false;
                 return arguments;
             }
@@ -124,17 +120,17 @@ Arguments parse_arguments(int argc, char** argv) {
 int main(int argc, char** argv) {
     Arguments arguments = parse_arguments(argc, argv);
     if (!arguments.valid) {
-        fprintf(stderr, "Usage: %s [SOURCEFILE]\n", argv[0]);
+        fprintf(stderr, "Usage: %s [UP2K_SourceFile]\n", argv[0]);
         return EXIT_FAILURE;
     }
 
     char* source_data = NULL;
-    StringView source = { 0 };
+    UP2K_StringView source = { 0 };
 
     if (arguments.source_file_name == NULL) {
         size_t length;
         read_whole_file(stdin, &source_data, &length);
-        source = (StringView){ .data = source_data, .length = length };
+        source = (UP2K_StringView){ .data = source_data, .length = length };
     } else {
         FILE* file = fopen(arguments.source_file_name, "r");
         if (!file) {
@@ -144,23 +140,23 @@ int main(int argc, char** argv) {
         size_t length;
         read_whole_file(file, &source_data, &length);
         fclose(file);
-        source = (StringView){ .data = source_data, .length = length };
+        source = (UP2K_StringView){ .data = source_data, .length = length };
     }
-    SourceFile source_file = {
+    UP2K_SourceFile source_file = {
         .filename =
-                string_view_from_string(arguments.source_file_name == NULL ? "<stdin>" : arguments.source_file_name),
+                UP2K_string_view_from_string(arguments.source_file_name == NULL ? "<stdin>" : arguments.source_file_name),
         .source = source,
     };
 
-    ByteVector machine_code;
-    InstructionMapVector instruction_map_vector = instruction_map_vector_create();
-    char error_message[512];
-    size_t const buffer_size = sizeof(error_message) / sizeof(error_message[0]);
-    bool const result = bssemble(source_file, arguments.instruction_map_file_name, &machine_code,
-                                 &instruction_map_vector, error_message, buffer_size);
+    UP2K_ByteVector machine_code;
+    UP2K_InstructionMapVector UP2K_instruction_map_vector = UP2K_instruction_map_vector_create();
+    char UP2K_error_message[512];
+    size_t const buffer_size = sizeof(UP2K_error_message) / sizeof(UP2K_error_message[0]);
+    bool const result = UP2K_bssemble(source_file, arguments.instruction_map_file_name, &machine_code,
+                                 &UP2K_instruction_map_vector, UP2K_error_message, buffer_size);
 
     if (!result) {
-        fprintf(stderr, "%s", error_message);
+        fprintf(stderr, "%s", UP2K_error_message);
     } else {
         // when in windows, we have to set the mode of stdout to binary because otherwise
         // every \n will be automatically replaced with \r\n which destroys the generated
@@ -169,15 +165,15 @@ int main(int argc, char** argv) {
         _setmode(_fileno(stdout), _O_BINARY);
 #endif
 
-        write_machine_code(machine_code, stdout);
+        UP2K_write_machine_code(machine_code, stdout);
         if (arguments.instruction_map_file_name != NULL) {
-            write_instruction_map(instruction_map_vector, arguments.instruction_map_file_name);
+            write_instruction_map(UP2K_instruction_map_vector, arguments.instruction_map_file_name);
         }
     }
 
     // cleanup
-    instruction_map_vector_free(&instruction_map_vector);
-    byte_vector_free(&machine_code);
+    UP2K_instruction_map_vector_free(&UP2K_instruction_map_vector);
+    UP2K_byte_vector_free(&machine_code);
     free(source_data);
     return result ? EXIT_SUCCESS : EXIT_FAILURE;
 }

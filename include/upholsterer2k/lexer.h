@@ -9,7 +9,7 @@ extern "C" {
 #include "upholsterer2k/source_file.h"
 #include "upholsterer2k/constants.h"
 
-TokenVector tokenize(SourceFile source_file, ConstantsMap const* constants);
+UP2K_TokenVector UP2K_tokenize(UP2K_SourceFile source_file, UP2K_ConstantsMap const* constants);
 
 #ifdef __cplusplus
 }

@@ -8,27 +8,27 @@
 #include <inttypes.h>
 #include <string.h>
 
-CREATE_VECTOR_DEFINITION(ByteVector, uint8_t, byte_vector)
+CREATE_VECTOR_DEFINITION(UP2K_ByteVector, uint8_t, UP2K_byte_vector)
 
-CREATE_VECTOR_DEFINITION(InstructionMapVector, InstructionMap, instruction_map_vector)
+CREATE_VECTOR_DEFINITION(UP2K_InstructionMapVector, UP2K_InstructionMap, UP2K_instruction_map_vector)
 
 typedef struct {
-    ArgumentType type;
-    Token const* first_token;
+    UP2K_ArgumentType type;
+    UP2K_Token const* first_token;
 } Argument;
 
 typedef struct {
-    StringView name;
-    Address offset;
+    UP2K_StringView name;
+    UP2K_Address offset;
 } Label;
 
 typedef struct {
-    Token const* label_token;
+    UP2K_Token const* label_token;
     size_t offset;
 } LabelPlaceholder;
 
-CREATE_HASHMAP_DECLARATION(LabelMap, Address, label_map)
-CREATE_HASHMAP_DEFINITION(LabelMap, Address, label_map)
+CREATE_HASHMAP_DECLARATION(LabelMap, UP2K_Address, label_map)
+CREATE_HASHMAP_DEFINITION(LabelMap, UP2K_Address, label_map)
 
 CREATE_VECTOR_DECLARATION(ArgumentVector, Argument, argument_vector)
 CREATE_VECTOR_DEFINITION(ArgumentVector, Argument, argument_vector)
@@ -37,15 +37,15 @@ CREATE_VECTOR_DECLARATION(LabelPlaceholderVector, LabelPlaceholder, label_placeh
 CREATE_VECTOR_DEFINITION(LabelPlaceholderVector, LabelPlaceholder, label_placeholder_vector)
 
 typedef struct {
-    TokenVector tokens;
-    OpcodeList opcodes;
+    UP2K_TokenVector tokens;
+    UP2K_OpcodeList opcodes;
     size_t current;
-    ByteVector machine_code;
+    UP2K_ByteVector machine_code;
     LabelMap labels;
-    SourceFile source_file;
+    UP2K_SourceFile source_file;
     LabelPlaceholderVector label_placeholders;
-    ConstantsMap const* constants;
-    InstructionMapVector *instruction_map_vector;
+    UP2K_ConstantsMap const* constants;
+    UP2K_InstructionMapVector *UP2K_instruction_map_vector;
 } ParserState;
 
 typedef struct {
@@ -58,15 +58,15 @@ typedef struct {
 
 static ParserState state;
 
-static Token* current(void) {
+static UP2K_Token* current(void) {
     return &state.tokens.data[state.current];
 }
 
-static Token* peek(void) {
+static UP2K_Token* peek(void) {
     return state.current == state.tokens.size - 1 ? NULL : &state.tokens.data[state.current + 1];
 }
 
-static Token* next(void) {
+static UP2K_Token* next(void) {
     if (state.current == state.tokens.size - 1) {
         return NULL;
     }
@@ -103,10 +103,10 @@ static U64Bytes u64_to_big_endian(uint64_t value) {
 static void emit_u32(uint32_t value) {
     assert(state.machine_code.size % 4 == 0 && "invalid alignment");
     U32Bytes const bytes = u32_to_big_endian(value);
-    byte_vector_push(&state.machine_code, bytes.bytes[0]);
-    byte_vector_push(&state.machine_code, bytes.bytes[1]);
-    byte_vector_push(&state.machine_code, bytes.bytes[2]);
-    byte_vector_push(&state.machine_code, bytes.bytes[3]);
+    UP2K_byte_vector_push(&state.machine_code, bytes.bytes[0]);
+    UP2K_byte_vector_push(&state.machine_code, bytes.bytes[1]);
+    UP2K_byte_vector_push(&state.machine_code, bytes.bytes[2]);
+    UP2K_byte_vector_push(&state.machine_code, bytes.bytes[3]);
 }
 
 static void emit_u64(uint64_t value) {
@@ -129,14 +129,14 @@ static void emit_u64(uint64_t value) {
     }
     assert(state.machine_code.size % 8 == 0 && "invalid alignment");
     U64Bytes const bytes = u64_to_big_endian(value);
-    byte_vector_push(&state.machine_code, bytes.bytes[0]);
-    byte_vector_push(&state.machine_code, bytes.bytes[1]);
-    byte_vector_push(&state.machine_code, bytes.bytes[2]);
-    byte_vector_push(&state.machine_code, bytes.bytes[3]);
-    byte_vector_push(&state.machine_code, bytes.bytes[4]);
-    byte_vector_push(&state.machine_code, bytes.bytes[5]);
-    byte_vector_push(&state.machine_code, bytes.bytes[6]);
-    byte_vector_push(&state.machine_code, bytes.bytes[7]);
+    UP2K_byte_vector_push(&state.machine_code, bytes.bytes[0]);
+    UP2K_byte_vector_push(&state.machine_code, bytes.bytes[1]);
+    UP2K_byte_vector_push(&state.machine_code, bytes.bytes[2]);
+    UP2K_byte_vector_push(&state.machine_code, bytes.bytes[3]);
+    UP2K_byte_vector_push(&state.machine_code, bytes.bytes[4]);
+    UP2K_byte_vector_push(&state.machine_code, bytes.bytes[5]);
+    UP2K_byte_vector_push(&state.machine_code, bytes.bytes[6]);
+    UP2K_byte_vector_push(&state.machine_code, bytes.bytes[7]);
 }
 
 static void overwrite_u32(size_t const offset, uint32_t const value) {
@@ -147,19 +147,19 @@ static void overwrite_u32(size_t const offset, uint32_t const value) {
     state.machine_code.data[offset + 3] = bytes.bytes[3];
 }
 
-static bool register_label(StringView label_name) {
+static bool register_label(UP2K_StringView label_name) {
     // TODO: this function performes two hashmap-lookups => get rid of one of them!!!!
-    Address* label = label_map_get(&state.labels, label_name);
+    UP2K_Address* label = label_map_get(&state.labels, label_name);
     if (label != NULL) {
         // label with this name already exists
         return false;
     }
-    label_map_insert(&state.labels, label_name, (Address)state.machine_code.size);
+    label_map_insert(&state.labels, label_name, (UP2K_Address)state.machine_code.size);
     return true;
 }
 
-static void error_on_token(char const * const message, Token const * const token) {
-    error(
+static void UP2K_error_on_token(char const * const message, UP2K_Token const * const token) {
+    UP2K_error(
         state.source_file,
         message,
         token->line,
@@ -168,68 +168,68 @@ static void error_on_token(char const * const message, Token const * const token
     );
 }
 
-static void error_on_current_token(char const * const message) {
-    error_on_token(message, current());
+static void UP2K_error_on_current_token(char const * const message) {
+    UP2K_error_on_token(message, current());
 }
 
 static void init_state(
-    SourceFile const source_file,
-    TokenVector const tokens,
-    OpcodeList const opcodes,
-    ConstantsMap const* constants,
-    InstructionMapVector *instruction_map_vector
+    UP2K_SourceFile const source_file,
+    UP2K_TokenVector const tokens,
+    UP2K_OpcodeList const opcodes,
+    UP2K_ConstantsMap const* constants,
+    UP2K_InstructionMapVector *UP2K_instruction_map_vector
 ) {
     state = (ParserState){
         .tokens = tokens,
         .opcodes = opcodes,
         .current = 0,
-        .machine_code = byte_vector_create(),
+        .machine_code = UP2K_byte_vector_create(),
         .labels = label_map_create(0),
         .source_file = source_file,
         .label_placeholders = label_placeholder_vector_create(),
         .constants = constants,
-        .instruction_map_vector = instruction_map_vector,
+        .UP2K_instruction_map_vector = UP2K_instruction_map_vector,
     };
 }
 
-static ByteVector cleanup_state(void) {
+static UP2K_ByteVector cleanup_state(void) {
     label_map_free(&state.labels);
     label_placeholder_vector_free(&state.label_placeholders);
     return state.machine_code;
 }
 
-static bool do_arguments_match(ArgumentType const lhs, ArgumentType const rhs) {
+static bool do_arguments_match(UP2K_ArgumentType const lhs, UP2K_ArgumentType const rhs) {
     return lhs == rhs;
 }
 
 static bool do_argument_lists_match(
     ArgumentVector const arguments,
-    OpcodeSpecification const * const opcode
+    UP2K_OpcodeSpecification const * const UP2K_Opcode
 ) {
-    assert(arguments.size == opcode->argument_count);
-    for (size_t i = 0; i < opcode->argument_count; ++i) {
-        if (!do_arguments_match(arguments.data[i].type, opcode->required_arguments[i])) {
+    assert(arguments.size == UP2K_Opcode->argument_count);
+    for (size_t i = 0; i < UP2K_Opcode->argument_count; ++i) {
+        if (!do_arguments_match(arguments.data[i].type, UP2K_Opcode->required_arguments[i])) {
             return false;
         }
     }
     return true;
 }
 
-static OpcodeSpecification const* find_opcode(Token const * const mnemonic, ArgumentVector const arguments) {
+static UP2K_OpcodeSpecification const* find_opcode(UP2K_Token const * const mnemonic, ArgumentVector const arguments) {
     for (size_t i = 0; i < state.opcodes.num_specifications; ++i) {
-        OpcodeSpecification const * const opcode = &state.opcodes.specifications[i];
+        UP2K_OpcodeSpecification const * const UP2K_Opcode = &state.opcodes.specifications[i];
         if (
-            opcode->argument_count == arguments.size
-            && string_view_compare_case_insensitive(mnemonic->string_view, opcode->mnemonic) == 0
-            && do_argument_lists_match(arguments, opcode)
+            UP2K_Opcode->argument_count == arguments.size
+            && UP2K_string_view_compare_case_insensitive(mnemonic->string_view, UP2K_Opcode->mnemonic) == 0
+            && do_argument_lists_match(arguments, UP2K_Opcode)
         ) {
-            return opcode;
+            return UP2K_Opcode;
         }
     }
     return NULL;
 }
 
-static void emit_instruction(Token const * const mnemonic, ArgumentVector const arguments) {
+static void emit_instruction(UP2K_Token const * const mnemonic, ArgumentVector const arguments) {
     fprintf(
         stderr,
         "should emit instruction for mnemonic %.*s with %zu arguments.\n",
@@ -246,33 +246,33 @@ static void emit_instruction(Token const * const mnemonic, ArgumentVector const 
         );
     }
 
-    OpcodeSpecification const * const opcode_specification = find_opcode(mnemonic, arguments);
+    UP2K_OpcodeSpecification const * const opcode_specification = find_opcode(mnemonic, arguments);
     if (opcode_specification == NULL) {
-        error_on_token("unknown instruction or invalid arguments", mnemonic);
+        UP2K_error_on_token("unknown instruction or invalid arguments", mnemonic);
     } else {
         fprintf(
             stderr,
-            "\tfound matching opcode: %.*s (%#.04x)\n",
+            "\tfound matching UP2K_Opcode: %.*s (%#.04x)\n",
             (int)opcode_specification->name.length,
             opcode_specification->name.data,
             opcode_specification->opcode
         );
     }
 
-    Instruction instruction = ((Instruction)opcode_specification->opcode) << 48;
+    UP2K_Instruction instruction = ((UP2K_Instruction)opcode_specification->opcode) << 48;
 
     bool success;
-    Word word_result;
-    Register register_result;
+    UP2K_Word word_result;
+    UP2K_Register register_result;
 
     for (size_t i = 0; i < arguments.size; ++i) {
         switch (arguments.data[i].type) {
-            case ARGUMENT_TYPE_ADDRESS_POINTER:
+            case UP2K_ARGUMENT_TYPE_ADDRESS_POINTER:
                 assert(arguments.data[i].first_token->type == TOKEN_TYPE_ASTERISK);
                 /* The argument can either be an address (e.g. *0x10) or a label
                  * (e.g. *main) or a constant (e.g. *TERMINAL_START). In the second
                  * and third case we do not do anything since the address will be
-                 * inserted later. Otherwise, we parse the number and use it as an
+                 * inserted later. Otherwise, we UP2K_parse the number and use it as an
                  * address. */
                 assert(
                     (arguments.data[i].first_token + 1)->type == TOKEN_TYPE_IDENTIFIER
@@ -290,7 +290,7 @@ static void emit_instruction(Token const * const mnemonic, ArgumentVector const 
                     );
                     instruction |= 0xDEADC0DE; // placeholder
                 } else {
-                    word_from_token(arguments.data[i].first_token + 1, &success, &word_result);
+                    UP2K_word_from_token(arguments.data[i].first_token + 1, &success, &word_result);
                     fprintf(
                         stderr,
                         "%.*s\n",
@@ -298,13 +298,13 @@ static void emit_instruction(Token const * const mnemonic, ArgumentVector const 
                         (arguments.data[i].first_token + 1)->string_view.data
                     );
                     if (!success) {
-                        error_on_token("invalid pointer value", arguments.data[i].first_token + 1);
+                        UP2K_error_on_token("invalid pointer value", arguments.data[i].first_token + 1);
                     }
                     instruction |= word_result;
                 }
                 break;
-            case ARGUMENT_TYPE_IMMEDIATE: {
-                TokenType const token_type = arguments.data[i].first_token->type;
+            case UP2K_ARGUMENT_TYPE_IMMEDIATE: {
+                UP2K_TokenType const token_type = arguments.data[i].first_token->type;
                 assert(
                     token_type == TOKEN_TYPE_IDENTIFIER
                     || token_type == TOKEN_TYPE_WORD_LITERAL
@@ -324,15 +324,15 @@ static void emit_instruction(Token const * const mnemonic, ArgumentVector const 
                     instruction |= 0xDEADC0DE; // placeholder
                 } else if (token_type == TOKEN_TYPE_WORD_LITERAL) {
                     // immediate
-                    word_from_token(arguments.data[i].first_token, &success, &word_result);
+                    UP2K_word_from_token(arguments.data[i].first_token, &success, &word_result);
                     if (!success) {
-                        error_on_token("invalid immediate value", arguments.data[i].first_token);
+                        UP2K_error_on_token("invalid immediate value", arguments.data[i].first_token);
                     }
                     instruction |= word_result;
                 } else if (token_type == TOKEN_TYPE_WORD_CONSTANT) {
                     bool constant_found;
                     uint64_t constant_value;
-                    get_constant_value(
+                    UP2K_get_constant_value(
                         arguments.data[i].first_token->string_view,
                         CONSTANT_TYPE_UNSIGNED_INTEGER,
                         &constant_found,
@@ -340,30 +340,30 @@ static void emit_instruction(Token const * const mnemonic, ArgumentVector const 
                         state.constants);
                     assert(constant_found && "look-up happened before and therefore now should be found");
                     fprintf(stderr, "\treplaced numeric constant with value %"PRIu64"\n", constant_value);
-                    instruction |= (Instruction)constant_value;
+                    instruction |= (UP2K_Instruction)constant_value;
                 } else {
                     assert(false && "unreachable");
                 }
                 break;
             }
-            case ARGUMENT_TYPE_NONE:
+            case UP2K_ARGUMENT_TYPE_NONE:
                 assert(false && "unreachable");
                 break;
-            case ARGUMENT_TYPE_REGISTER_POINTER: {
+            case UP2K_ARGUMENT_TYPE_REGISTER_POINTER: {
                 /* the argument can now either be a register point (e.g. "*R6") or a register constant
                  * pointer (e.g. "*sp" for dereferencing the stack pointer) */
                 assert(arguments.data[i].first_token->type == TOKEN_TYPE_ASTERISK);
-                TokenType const token_type = (arguments.data[i].first_token + 1)->type;
+                UP2K_TokenType const token_type = (arguments.data[i].first_token + 1)->type;
                 if (token_type == TOKEN_TYPE_REGISTER) {
-                    register_from_token(arguments.data[i].first_token + 1, &success, &register_result);
+                    UP2K_register_from_token(arguments.data[i].first_token + 1, &success, &register_result);
                     if (!success) {
-                        error_on_token("invalid register identifier", arguments.data[i].first_token + 1);
+                        UP2K_error_on_token("invalid register identifier", arguments.data[i].first_token + 1);
                     }
-                    instruction |= ((Instruction)register_result) << opcode_specification->offsets[i];
+                    instruction |= ((UP2K_Instruction)register_result) << opcode_specification->offsets[i];
                 } else if (token_type == TOKEN_TYPE_REGISTER_CONSTANT) {
                     bool constant_found;
                     uint64_t constant_value;
-                    get_constant_value(
+                    UP2K_get_constant_value(
                         (arguments.data[i].first_token + 1)->string_view,
                         CONSTANT_TYPE_REGISTER,
                         &constant_found,
@@ -371,26 +371,26 @@ static void emit_instruction(Token const * const mnemonic, ArgumentVector const 
                         state.constants);
                     assert(constant_found && "look-up happened before and thefeore should not fail here");
                     fprintf(stderr, "\treplaced register constant with a value of %"PRIu64"\n", constant_value);
-                    instruction |= ((Instruction)constant_value) << opcode_specification->offsets[i];
+                    instruction |= ((UP2K_Instruction)constant_value) << opcode_specification->offsets[i];
                 } else {
                     assert(false && "unreachable");
                 }
                 break;
             }
-            case ARGUMENT_TYPE_REGISTER: {
+            case UP2K_ARGUMENT_TYPE_REGISTER: {
                 /* the argument can now either be a register (e.g. R6) or a register constant
                  * (e.g. "sp" for the stack pointer) */
-                TokenType const token_type = arguments.data[i].first_token->type;
+                UP2K_TokenType const token_type = arguments.data[i].first_token->type;
                 if (token_type == TOKEN_TYPE_REGISTER) {
-                    register_from_token(arguments.data[i].first_token, &success, &register_result);
+                    UP2K_register_from_token(arguments.data[i].first_token, &success, &register_result);
                     if (!success) {
-                        error_on_token("invalid register identifier", arguments.data[i].first_token);
+                        UP2K_error_on_token("invalid register identifier", arguments.data[i].first_token);
                     }
-                    instruction |= ((Instruction)register_result) << opcode_specification->offsets[i];
+                    instruction |= ((UP2K_Instruction)register_result) << opcode_specification->offsets[i];
                 } else if (token_type == TOKEN_TYPE_REGISTER_CONSTANT) {
                     bool constant_found;
                     uint64_t constant_value;
-                    get_constant_value(
+                    UP2K_get_constant_value(
                         arguments.data[i].first_token->string_view,
                         CONSTANT_TYPE_REGISTER,
                         &constant_found,
@@ -398,7 +398,7 @@ static void emit_instruction(Token const * const mnemonic, ArgumentVector const 
                         state.constants);
                     assert(constant_found && "look-up happened before and thefeore should not fail here");
                     fprintf(stderr, "\treplaced register constant with a value of %"PRIu64"\n", constant_value);
-                    instruction |= ((Instruction)constant_value) << opcode_specification->offsets[i];
+                    instruction |= ((UP2K_Instruction)constant_value) << opcode_specification->offsets[i];
                 } else {
                     assert(false && "unreachable");
                 }
@@ -412,25 +412,25 @@ static void emit_instruction(Token const * const mnemonic, ArgumentVector const 
 
 static void parse_label(void) {
     assert(peek()->type == TOKEN_TYPE_COLON);
-    if (!register_label(identifier_from_token(current()))) {
-        error_on_current_token("label redefinition");
+    if (!register_label(UP2K_identifier_from_token(current()))) {
+        UP2K_error_on_current_token("label redefinition");
     }
     next(); // proceed to colon token
     if (peek()->type != TOKEN_TYPE_NEWLINE) {
-        error_on_current_token("newline expected after label definition");
+        UP2K_error_on_current_token("newline expected after label definition");
     }
 }
 
 static void parse_instruction(void) {
-    Token const * const mnemonic = current();
-    Token const* current_argument_start = NULL;
+    UP2K_Token const * const mnemonic = current();
+    UP2K_Token const* current_argument_start = NULL;
     ArgumentVector arguments = argument_vector_create();
     bool valid_argument_start_position = true;
     next();
     while (true) {
         if (current()->type == TOKEN_TYPE_COMMA) {
             if (valid_argument_start_position) {
-                error_on_current_token("unexpected comma");
+                UP2K_error_on_current_token("unexpected comma");
             } else {
                 next();
                 valid_argument_start_position = true;
@@ -438,28 +438,28 @@ static void parse_instruction(void) {
         }
         if (current()->type == TOKEN_TYPE_ASTERISK) {
             if (!valid_argument_start_position) {
-                error_on_current_token("comma expected");
+                UP2K_error_on_current_token("comma expected");
             }
             // pointer or address or label pointer
             current_argument_start = current();
         } else if (current()->type == TOKEN_TYPE_EOF) {
-            error(state.source_file, "unexpected end of file", current()->line, current()->column, 1);
+            UP2K_error(state.source_file, "unexpected end of file", current()->line, current()->column, 1);
         } else if (current()->type == TOKEN_TYPE_NEWLINE) {
             if (current_argument_start != NULL) {
-                error_on_current_token("register or address expected");
+                UP2K_error_on_current_token("register or address expected");
             }
             break;
         } else {
             if (current_argument_start == NULL) {
                 // no pointer and no address
                 if (!valid_argument_start_position) {
-                    error_on_current_token("comma expected");
+                    UP2K_error_on_current_token("comma expected");
                 }
                 switch (current()->type) {
                     case TOKEN_TYPE_WORD_CONSTANT:
                     case TOKEN_TYPE_WORD_LITERAL:
                         argument_vector_push(&arguments, (Argument){
-                            .type = ARGUMENT_TYPE_IMMEDIATE,
+                            .type = UP2K_ARGUMENT_TYPE_IMMEDIATE,
                             .first_token = current(),
                         });
                         valid_argument_start_position = false;
@@ -467,20 +467,20 @@ static void parse_instruction(void) {
                     case TOKEN_TYPE_REGISTER_CONSTANT:
                     case TOKEN_TYPE_REGISTER:
                         argument_vector_push(&arguments, (Argument){
-                            .type = ARGUMENT_TYPE_REGISTER,
+                            .type = UP2K_ARGUMENT_TYPE_REGISTER,
                             .first_token = current(),
                         });
                         valid_argument_start_position = false;
                         break;
                     case TOKEN_TYPE_IDENTIFIER:
                         argument_vector_push(&arguments, (Argument){
-                            .type = ARGUMENT_TYPE_IMMEDIATE,
+                            .type = UP2K_ARGUMENT_TYPE_IMMEDIATE,
                             .first_token = current(),
                         });
                         valid_argument_start_position = false;
                         break;
                     default:
-                        error_on_current_token("invalid argument");
+                        UP2K_error_on_current_token("invalid argument");
                 }
             } else {
                 // second token of pointer or address or label pointer
@@ -488,7 +488,7 @@ static void parse_instruction(void) {
                     case TOKEN_TYPE_WORD_CONSTANT:
                     case TOKEN_TYPE_WORD_LITERAL:
                         argument_vector_push(&arguments, (Argument){
-                            .type = ARGUMENT_TYPE_ADDRESS_POINTER,
+                            .type = UP2K_ARGUMENT_TYPE_ADDRESS_POINTER,
                             .first_token = current_argument_start,
                         });
                         valid_argument_start_position = false;
@@ -496,20 +496,20 @@ static void parse_instruction(void) {
                     case TOKEN_TYPE_REGISTER_CONSTANT:
                     case TOKEN_TYPE_REGISTER:
                         argument_vector_push(&arguments, (Argument){
-                            .type = ARGUMENT_TYPE_REGISTER_POINTER,
+                            .type = UP2K_ARGUMENT_TYPE_REGISTER_POINTER,
                             .first_token = current_argument_start,
                         });
                         valid_argument_start_position = false;
                         break;
                     case TOKEN_TYPE_IDENTIFIER:
                         argument_vector_push(&arguments, (Argument){
-                            .type = ARGUMENT_TYPE_ADDRESS_POINTER,
+                            .type = UP2K_ARGUMENT_TYPE_ADDRESS_POINTER,
                             .first_token = current_argument_start,
                         });
                         valid_argument_start_position = false;
                         break;
                     default:
-                        error_on_current_token("invalid argument");
+                        UP2K_error_on_current_token("invalid argument");
                 }
                 current_argument_start = NULL;
             }
@@ -523,8 +523,8 @@ static void parse_instruction(void) {
     // Writing line mapping after emitting instruction, because
     // emit_instruction can increase position by 8 (normal) or
     // by 12 (to fix alignment).
-    if (state.instruction_map_vector != NULL) {
-        instruction_map_vector_push(state.instruction_map_vector, (InstructionMap){
+    if (state.UP2K_instruction_map_vector != NULL) {
+        UP2K_instruction_map_vector_push(state.UP2K_instruction_map_vector, (UP2K_InstructionMap){
             .line = mnemonic->line,
             .address = state.machine_code.size - 8,
         });
@@ -542,23 +542,23 @@ static void parse_identifier(void) {
 
 static void parse_word_literal(void) {
     if (current()->type != TOKEN_TYPE_WORD_LITERAL) {
-        error_on_current_token("expected word literal");
+        UP2K_error_on_current_token("expected UP2K_Word literal");
     }
     bool success;
-    Word result;
-    word_from_token(current(), &success, &result);
-    assert(success); // lexer should only tokenize word literals if they are valid
+    UP2K_Word result;
+    UP2K_word_from_token(current(), &success, &result);
+    assert(success); // lexer should only UP2K_tokenize UP2K_Word literals if they are valid
     emit_u32(result);
-    fprintf(stderr, "should emit word literal: %"PRIu32"\n", result);
+    fprintf(stderr, "should emit UP2K_Word literal: %"PRIu32"\n", result);
     next();
 }
 
 static void parse_words_literal(void) {
     assert(current()->type == TOKEN_TYPE_IDENTIFIER);
-    assert(string_view_compare_case_insensitive(current()->string_view, string_view_from_string("words")) == 0);
+    assert(UP2K_string_view_compare_case_insensitive(current()->string_view, UP2K_string_view_from_string("words")) == 0);
     next();
     if (current()->type != TOKEN_TYPE_LEFT_BRACKET) {
-        error_on_current_token("\"[\" expected");
+        UP2K_error_on_current_token("\"[\" expected");
     }
     next();
     parse_word_literal();
@@ -570,20 +570,20 @@ static void parse_words_literal(void) {
         parse_word_literal();
     }
     if (current()->type != TOKEN_TYPE_RIGHT_BRACKET) {
-        error_on_current_token("\"]\" expected");
+        UP2K_error_on_current_token("\"]\" expected");
     }
     next();
     if (current()->type != TOKEN_TYPE_NEWLINE) {
-        error_on_current_token("newline expected after words literal");
+        UP2K_error_on_current_token("newline expected after words literal");
     }
 }
 
-static void emit_quoted_escaped_string(StringView string) {
+static void emit_quoted_escaped_string(UP2K_StringView string) {
     size_t const length_byte_offset = state.machine_code.size;
     emit_u32(0); // length byte, will be replaced later
     char const* current = string.data + 1;
     char const * const end = string.data + string.length - 1;
-    Word length = 0;
+    UP2K_Word length = 0;
     while (current != end) {
         switch (*current) {
             case '\\':
@@ -591,25 +591,25 @@ static void emit_quoted_escaped_string(StringView string) {
                 assert(current != end); // the lexer already checks for valid escaping
                 switch (*current) {
                     case '"':
-                        emit_u32((Word)'"');
+                        emit_u32((UP2K_Word)'"');
                         break;
                     case '\\':
-                        emit_u32((Word)'\\');
+                        emit_u32((UP2K_Word)'\\');
                         break;
                     case 't':
-                        emit_u32((Word)'\t');
+                        emit_u32((UP2K_Word)'\t');
                         break;
                     case 'n':
-                        emit_u32((Word)'\n');
+                        emit_u32((UP2K_Word)'\n');
                         break;
                     case 'v':
-                        emit_u32((Word)'\v');
+                        emit_u32((UP2K_Word)'\v');
                         break;
                     case 'f':
-                        emit_u32((Word)'\f');
+                        emit_u32((UP2K_Word)'\f');
                         break;
                     case 'r':
-                        emit_u32((Word)'\r');
+                        emit_u32((UP2K_Word)'\r');
                         break;
                     default:
                         assert(false && "invalid escape sequence"); // should be caught by the lexer
@@ -617,7 +617,7 @@ static void emit_quoted_escaped_string(StringView string) {
                 }
                 break;
             default:
-                emit_u32((Word)*current);
+                emit_u32((UP2K_Word)*current);
                 break;
         }
         ++length;
@@ -628,16 +628,16 @@ static void emit_quoted_escaped_string(StringView string) {
 
 static void parse_string_literal(void) {
     assert(current()->type == TOKEN_TYPE_IDENTIFIER);
-    assert(string_view_compare_case_insensitive(current()->string_view, string_view_from_string("string")) == 0);
+    assert(UP2K_string_view_compare_case_insensitive(current()->string_view, UP2K_string_view_from_string("string")) == 0);
     next();
     if (current()->type != TOKEN_TYPE_STRING_LITERAL) {
-        error_on_current_token("string literal expected");
+        UP2K_error_on_current_token("string literal expected");
     }
     fprintf(stderr, "should emit string literal: %.*s\n", (int)current()->string_view.length, current()->string_view.data);
     emit_quoted_escaped_string(current()->string_view);
     next();
     if (current()->type != TOKEN_TYPE_NEWLINE) {
-        error_on_current_token("newline expected after string literal");
+        UP2K_error_on_current_token("newline expected after string literal");
     }
 }
 
@@ -645,31 +645,31 @@ static void parse_literal(void) {
     assert(current()->type == TOKEN_TYPE_DOT);
     next();
     if (current()->type != TOKEN_TYPE_IDENTIFIER) {
-        error_on_current_token("expected literal");
+        UP2K_error_on_current_token("expected literal");
     }
 
-    if (string_view_compare_case_insensitive(current()->string_view, string_view_from_string("words")) == 0) {
+    if (UP2K_string_view_compare_case_insensitive(current()->string_view, UP2K_string_view_from_string("words")) == 0) {
         parse_words_literal();
-    } else if (string_view_compare_case_insensitive(current()->string_view, string_view_from_string("string")) == 0) {
+    } else if (UP2K_string_view_compare_case_insensitive(current()->string_view, UP2K_string_view_from_string("string")) == 0) {
         parse_string_literal();
     } else {
-        error_on_current_token("expected either \"words\" or \"string\"");
+        UP2K_error_on_current_token("expected either \"words\" or \"string\"");
     }
 }
 
-ByteVector parse(
-    SourceFile const source_file,
-    TokenVector const tokens,
-    OpcodeList const opcodes,
-    ConstantsMap const* constants,
-    InstructionMapVector *instruction_map_vector
+UP2K_ByteVector UP2K_parse(
+    UP2K_SourceFile const source_file,
+    UP2K_TokenVector const tokens,
+    UP2K_OpcodeList const opcodes,
+    UP2K_ConstantsMap const* constants,
+    UP2K_InstructionMapVector *UP2K_instruction_map_vector
 ) {
     assert(tokens.size > 0);
     assert(tokens.data[tokens.size - 1].type == TOKEN_TYPE_EOF);
     if (tokens.size == 1) {
-        error(source_file, "empty input", tokens.data[0].line, tokens.data[0].column, 1);
+        UP2K_error(source_file, "empty input", tokens.data[0].line, tokens.data[0].column, 1);
     }
-    init_state(source_file, tokens, opcodes, constants, instruction_map_vector);
+    init_state(source_file, tokens, opcodes, constants, UP2K_instruction_map_vector);
     while (current()->type != TOKEN_TYPE_EOF) {
         switch (current()->type) {
             case TOKEN_TYPE_IDENTIFIER:
@@ -681,7 +681,7 @@ ByteVector parse(
             case TOKEN_TYPE_NEWLINE:
                 break;
             default:
-                error_on_current_token("unexpected token");
+                UP2K_error_on_current_token("unexpected token");
                 break;
         }
         next();
@@ -700,17 +700,17 @@ ByteVector parse(
 
     bool entry_point_found;
     uint64_t entry_point;
-    get_constant_value(
-        string_view_from_string("ENTRY_POINT"),
+    UP2K_get_constant_value(
+        UP2K_string_view_from_string("ENTRY_POINT"),
         CONSTANT_TYPE_ADDRESS,
         &entry_point_found,
         &entry_point,
         state.constants);
     assert(entry_point && "entry point must be found");
 
-    if (instruction_map_vector != NULL) {
-        for (size_t i = 0; i < instruction_map_vector->size; ++i) {
-            instruction_map_vector->data[i].address += entry_point;
+    if (UP2K_instruction_map_vector != NULL) {
+        for (size_t i = 0; i < UP2K_instruction_map_vector->size; ++i) {
+            UP2K_instruction_map_vector->data[i].address += entry_point;
         }
     }
 
@@ -719,7 +719,7 @@ ByteVector parse(
 
         bool found_constant;
         uint64_t constant_value;
-        get_constant_value(
+        UP2K_get_constant_value(
             placeholder->label_token->string_view,
             CONSTANT_TYPE_ADDRESS,
             &found_constant,
@@ -732,22 +732,22 @@ ByteVector parse(
                 placeholder->offset,
                 constant_value
             );
-            overwrite_u32(placeholder->offset, (Word)constant_value);
+            overwrite_u32(placeholder->offset, (UP2K_Word)constant_value);
             continue;
         }
 
-        Address* offset = label_map_get(&state.labels, placeholder->label_token->string_view);
+        UP2K_Address* offset = label_map_get(&state.labels, placeholder->label_token->string_view);
         if (offset == NULL) {
-            error_on_token("unknown label", placeholder->label_token);
+            UP2K_error_on_token("unknown label", placeholder->label_token);
         } else {
             assert(state.machine_code.size > placeholder->offset && "invalid offset");
             fprintf(
                 stderr,
                 "Replacing label at %zu with %"PRIx32"\n",
                 placeholder->offset,
-                *offset + (Address)entry_point
+                *offset + (UP2K_Address)entry_point
             );
-            overwrite_u32(placeholder->offset, *offset + (Address)entry_point);
+            overwrite_u32(placeholder->offset, *offset + (UP2K_Address)entry_point);
         }
     }
 

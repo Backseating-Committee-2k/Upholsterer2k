@@ -6,10 +6,10 @@ extern "C" {
 
 #include <stdint.h>
 
-typedef uint32_t Word;
-typedef uint32_t Address;
-typedef uint8_t Register;
-typedef uint64_t Instruction;
+typedef uint32_t UP2K_Word;
+typedef uint32_t UP2K_Address;
+typedef uint8_t UP2K_Register;
+typedef uint64_t UP2K_Instruction;
 
 #ifdef __cplusplus
 }

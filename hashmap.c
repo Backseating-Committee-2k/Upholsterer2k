@@ -75,7 +75,7 @@ size_t const powers_of_two[64] = {
 };
 
 // source: https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
-uint64_t hash_string_view(StringView string_view) {
+uint64_t UP2K_hash_string_view(UP2K_StringView string_view) {
     uint64_t hash = FNV_OFFSET_BASIS;
     for (size_t i = 0; i < string_view.length; ++i) {
         hash *= FNV_PRIME;

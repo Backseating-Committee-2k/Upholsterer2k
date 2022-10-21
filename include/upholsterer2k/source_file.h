@@ -7,9 +7,9 @@ extern "C" {
 #include "upholsterer2k/string_view.h"
 
 typedef struct {
-    StringView filename;
-    StringView source;
-} SourceFile;
+    UP2K_StringView filename;
+    UP2K_StringView source;
+} UP2K_SourceFile;
 
 #ifdef __cplusplus
 }

@@ -1,7 +1,7 @@
 #include "upholsterer2k/constants.h"
 #include <stddef.h>
 
-ConstantAbbreviation g_constant_abbreviations[] = {
+UP2K_ConstantAbbreviation UP2K_g_constant_abbreviations[] = {
     {
        .name = "DISPLAY_HEIGHT",
        .abbreviation = "DISPLAY_HEIGHT",
@@ -92,4 +92,4 @@ ConstantAbbreviation g_constant_abbreviations[] = {
     },
 };
 
-size_t g_num_constant_abbreviations = sizeof(g_constant_abbreviations) / sizeof(g_constant_abbreviations[0]);
+size_t UP2K_g_num_constant_abbreviations = sizeof(UP2K_g_constant_abbreviations) / sizeof(UP2K_g_constant_abbreviations[0]);
