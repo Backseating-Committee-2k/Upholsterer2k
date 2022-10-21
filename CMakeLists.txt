@@ -43,21 +43,21 @@ set(PUBLIC_HEADER_FILES
 )
 
 set(FILES
-    "main.c"
-    "string_view_utils.c"
-    "string_view.c"
-    "token.c"
-    "token_vector.c"
-    "lexer.c"
-    "error.c"
-    "opcode_specification.c"
-    "opcodes.c"
-    "parser.c"
-    "constants.c"
-    "constant_abbreviations.c"
-    "constants_helpers.c"
-    "hashmap.c"
-    "upholsterer2k.c"
+    "src/main.c"
+    "src/string_view_utils.c"
+    "src/string_view.c"
+    "src/token.c"
+    "src/token_vector.c"
+    "src/lexer.c"
+    "src/error.c"
+    "src/opcode_specification.c"
+    "src/opcodes.c"
+    "src/parser.c"
+    "src/constants.c"
+    "src/constant_abbreviations.c"
+    "src/constants_helpers.c"
+    "src/hashmap.c"
+    "src/upholsterer2k.c"
     ${PUBLIC_HEADER_FILES}
 )
 
