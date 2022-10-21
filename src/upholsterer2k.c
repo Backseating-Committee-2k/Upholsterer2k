@@ -9,6 +9,7 @@ void UP2K_write_machine_code(UP2K_ByteVector const machine_code, FILE* const fil
 static void check_opcodes(UP2K_OpcodeList const opcodes) {
     for (size_t i = 0; i < opcodes.num_specifications; ++i) {
         UP2K_OpcodeSpecification const* const specification = &opcodes.specifications[i];
+        (void)specification; // simulate [[maybe_unused]]
         assert(specification->mnemonic.length > 0 && "unknown UP2K_Opcode");
     }
 }

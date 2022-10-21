@@ -8,16 +8,15 @@ void UP2K_fill_constants_map(UP2K_ConstantsMap* constants_map) {
     for (size_t i = 0; i < UP2K_g_num_constant_abbreviations; ++i) {
         UP2K_StringView abbreviation = UP2K_string_view_from_string(UP2K_g_constant_abbreviations[i].abbreviation);
         UP2K_StringView abbreviation_mapping = UP2K_string_view_from_string(UP2K_g_constant_abbreviations[i].name);
-        bool found = false;
         for (size_t j = 0; j < UP2K_g_num_constants; ++j) {
             UP2K_StringView name = UP2K_string_view_from_string(UP2K_g_constants[j].name);
             if (UP2K_string_view_compare(abbreviation_mapping, name) == 0) {
-                found = true;
                 bool const did_not_exist_before = constants_map_insert(
                     constants_map,
                     abbreviation,
                     &UP2K_g_constants[j]
                 );
+                (void)did_not_exist_before; // simulate [[maybe_unused]]
                 assert(did_not_exist_before && "constant abbreviations must be unique");
                 break;
             }
@@ -50,6 +49,7 @@ void UP2K_get_constant(UP2K_StringView abbreviation, bool* out_found, UP2K_Const
             return;
         }
     }
+    (void)constant; // simulate [[maybe_unused]]
     assert(constant != NULL && "constant with given name does not exist");
 }
 
