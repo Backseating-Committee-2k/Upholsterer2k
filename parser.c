@@ -255,11 +255,11 @@ static void emit_instruction(UP2K_Token const * const mnemonic, ArgumentVector c
             "\tfound matching UP2K_Opcode: %.*s (%#.04x)\n",
             (int)opcode_specification->name.length,
             opcode_specification->name.data,
-            opcode_specification->UP2K_Opcode
+            opcode_specification->opcode
         );
     }
 
-    UP2K_Instruction instruction = ((UP2K_Instruction)opcode_specification->UP2K_Opcode) << 48;
+    UP2K_Instruction instruction = ((UP2K_Instruction)opcode_specification->opcode) << 48;
 
     bool success;
     UP2K_Word word_result;

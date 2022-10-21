@@ -26,7 +26,7 @@ typedef struct {
     size_t argument_count;             // e.g. 2
     UP2K_ArgumentType required_arguments[6];// e.g. { Immediate, UP2K_Register }
     uint8_t offsets[6];                // amount to shift the argument to the right (in bits)
-    UP2K_Opcode UP2K_Opcode;                     // e.g. 0x0000
+    UP2K_Opcode opcode;                     // e.g. 0x0000
 } UP2K_OpcodeSpecification;
 
 #define MNEMONICS               \

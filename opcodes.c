@@ -12,7 +12,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_IMMEDIATE, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 0, 40 },
-        .UP2K_Opcode = 0x0,
+        .opcode = 0x0,
     };
     specifications[1] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveRegisterAddress"),
@@ -20,7 +20,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_ADDRESS_POINTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 0, 40 },
-        .UP2K_Opcode = 0x1,
+        .opcode = 0x1,
     };
     specifications[2] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveTargetSource"),
@@ -28,7 +28,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 40 },
-        .UP2K_Opcode = 0x2,
+        .opcode = 0x2,
     };
     specifications[3] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveAddressRegister"),
@@ -36,7 +36,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_ADDRESS_POINTER },
         .offsets = { 40, 0 },
-        .UP2K_Opcode = 0x3,
+        .opcode = 0x3,
     };
     specifications[4] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveTargetPointer"),
@@ -44,7 +44,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 40 },
-        .UP2K_Opcode = 0x4,
+        .opcode = 0x4,
     };
     specifications[5] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MovePointerSource"),
@@ -52,7 +52,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER_POINTER },
         .offsets = { 32, 40 },
-        .UP2K_Opcode = 0x5,
+        .opcode = 0x5,
     };
     specifications[6] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("HaltAndCatchFire"),
@@ -60,7 +60,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 0,
         .required_arguments = { UP2K_ARGUMENT_TYPE_NONE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x6,
+        .opcode = 0x6,
     };
     specifications[7] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("AddTargetLhsRhs"),
@@ -68,7 +68,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0x7,
+        .opcode = 0x7,
     };
     specifications[8] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("SubtractTargetLhsRhs"),
@@ -76,7 +76,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0x8,
+        .opcode = 0x8,
     };
     specifications[9] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("SubtractWithCarryTargetLhsRhs"),
@@ -84,7 +84,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0x9,
+        .opcode = 0x9,
     };
     specifications[10] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MultiplyHighLowLhsRhs"),
@@ -92,7 +92,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 4,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 24, 16, 40, 32 },
-        .UP2K_Opcode = 0xa,
+        .opcode = 0xa,
     };
     specifications[11] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("DivmodTargetModLhsRhs"),
@@ -100,7 +100,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 4,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 24, 16, 40, 32 },
-        .UP2K_Opcode = 0xb,
+        .opcode = 0xb,
     };
     specifications[12] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("AndTargetLhsRhs"),
@@ -108,7 +108,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0xc,
+        .opcode = 0xc,
     };
     specifications[13] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("OrTargetLhsRhs"),
@@ -116,7 +116,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0xd,
+        .opcode = 0xd,
     };
     specifications[14] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("XorTargetLhsRhs"),
@@ -124,7 +124,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0xe,
+        .opcode = 0xe,
     };
     specifications[15] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("NotTargetSource"),
@@ -132,7 +132,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 40 },
-        .UP2K_Opcode = 0xf,
+        .opcode = 0xf,
     };
     specifications[16] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("LeftShiftTargetLhsRhs"),
@@ -140,7 +140,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0x10,
+        .opcode = 0x10,
     };
     specifications[17] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("RightShiftTargetLhsRhs"),
@@ -148,7 +148,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0x11,
+        .opcode = 0x11,
     };
     specifications[18] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("AddTargetSourceImmediate"),
@@ -156,7 +156,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_IMMEDIATE, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 0, 40 },
-        .UP2K_Opcode = 0x12,
+        .opcode = 0x12,
     };
     specifications[19] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("SubtractTargetSourceImmediate"),
@@ -164,7 +164,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_IMMEDIATE, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 0, 40 },
-        .UP2K_Opcode = 0x13,
+        .opcode = 0x13,
     };
     specifications[20] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("CompareTargetLhsRhs"),
@@ -172,7 +172,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0x14,
+        .opcode = 0x14,
     };
     specifications[21] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("PushRegister"),
@@ -180,7 +180,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40 },
-        .UP2K_Opcode = 0x15,
+        .opcode = 0x15,
     };
     specifications[22] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("PopRegister"),
@@ -188,7 +188,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40 },
-        .UP2K_Opcode = 0x16,
+        .opcode = 0x16,
     };
     specifications[23] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("CallImmediate"),
@@ -196,7 +196,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x17,
+        .opcode = 0x17,
     };
     specifications[24] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("Return"),
@@ -204,7 +204,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 0,
         .required_arguments = { UP2K_ARGUMENT_TYPE_NONE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x18,
+        .opcode = 0x18,
     };
     specifications[25] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpImmediate"),
@@ -212,7 +212,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x19,
+        .opcode = 0x19,
     };
     specifications[26] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpRegister"),
@@ -220,7 +220,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40 },
-        .UP2K_Opcode = 0x1a,
+        .opcode = 0x1a,
     };
     specifications[27] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpImmediateIfEqual"),
@@ -228,7 +228,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 40, 0 },
-        .UP2K_Opcode = 0x1b,
+        .opcode = 0x1b,
     };
     specifications[28] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpImmediateIfGreaterThan"),
@@ -236,7 +236,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 40, 0 },
-        .UP2K_Opcode = 0x1c,
+        .opcode = 0x1c,
     };
     specifications[29] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpImmediateIfLessThan"),
@@ -244,7 +244,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 40, 0 },
-        .UP2K_Opcode = 0x1d,
+        .opcode = 0x1d,
     };
     specifications[30] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpImmediateIfGreaterThanOrEqual"),
@@ -252,7 +252,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 40, 0 },
-        .UP2K_Opcode = 0x1e,
+        .opcode = 0x1e,
     };
     specifications[31] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpImmediateIfLessThanOrEqual"),
@@ -260,7 +260,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 40, 0 },
-        .UP2K_Opcode = 0x1f,
+        .opcode = 0x1f,
     };
     specifications[32] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpImmediateIfZero"),
@@ -268,7 +268,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x20,
+        .opcode = 0x20,
     };
     specifications[33] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpImmediateIfNotZero"),
@@ -276,7 +276,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x21,
+        .opcode = 0x21,
     };
     specifications[34] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpImmediateIfCarry"),
@@ -284,7 +284,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x22,
+        .opcode = 0x22,
     };
     specifications[35] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpImmediateIfNotCarry"),
@@ -292,7 +292,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x23,
+        .opcode = 0x23,
     };
     specifications[36] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpImmediateIfDivideByZero"),
@@ -300,7 +300,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x24,
+        .opcode = 0x24,
     };
     specifications[37] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpImmediateIfNotDivideByZero"),
@@ -308,7 +308,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x25,
+        .opcode = 0x25,
     };
     specifications[38] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpRegisterIfEqual"),
@@ -316,7 +316,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40, 32 },
-        .UP2K_Opcode = 0x26,
+        .opcode = 0x26,
     };
     specifications[39] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpRegisterIfGreaterThan"),
@@ -324,7 +324,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40, 32 },
-        .UP2K_Opcode = 0x27,
+        .opcode = 0x27,
     };
     specifications[40] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpRegisterIfLessThan"),
@@ -332,7 +332,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40, 32 },
-        .UP2K_Opcode = 0x28,
+        .opcode = 0x28,
     };
     specifications[41] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpRegisterIfGreaterThanOrEqual"),
@@ -340,7 +340,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40, 32 },
-        .UP2K_Opcode = 0x29,
+        .opcode = 0x29,
     };
     specifications[42] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpRegisterIfLessThanOrEqual"),
@@ -348,7 +348,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40, 32 },
-        .UP2K_Opcode = 0x2a,
+        .opcode = 0x2a,
     };
     specifications[43] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpRegisterIfZero"),
@@ -356,7 +356,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER },
         .offsets = { 40 },
-        .UP2K_Opcode = 0x2b,
+        .opcode = 0x2b,
     };
     specifications[44] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpRegisterIfNotZero"),
@@ -364,7 +364,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER },
         .offsets = { 40 },
-        .UP2K_Opcode = 0x2c,
+        .opcode = 0x2c,
     };
     specifications[45] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpRegisterIfCarry"),
@@ -372,7 +372,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER },
         .offsets = { 40 },
-        .UP2K_Opcode = 0x2d,
+        .opcode = 0x2d,
     };
     specifications[46] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpRegisterIfNotCarry"),
@@ -380,7 +380,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER },
         .offsets = { 40 },
-        .UP2K_Opcode = 0x2e,
+        .opcode = 0x2e,
     };
     specifications[47] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpRegisterIfDivideByZero"),
@@ -388,7 +388,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER },
         .offsets = { 40 },
-        .UP2K_Opcode = 0x2f,
+        .opcode = 0x2f,
     };
     specifications[48] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("JumpRegisterIfNotDivideByZero"),
@@ -396,7 +396,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER },
         .offsets = { 40 },
-        .UP2K_Opcode = 0x30,
+        .opcode = 0x30,
     };
     specifications[49] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("NoOp"),
@@ -404,7 +404,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 0,
         .required_arguments = { UP2K_ARGUMENT_TYPE_NONE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x31,
+        .opcode = 0x31,
     };
     specifications[50] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("GetKeyState"),
@@ -412,7 +412,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 40 },
-        .UP2K_Opcode = 0x32,
+        .opcode = 0x32,
     };
     specifications[51] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("PollTime"),
@@ -420,7 +420,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40, 32 },
-        .UP2K_Opcode = 0x33,
+        .opcode = 0x33,
     };
     specifications[52] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("AddWithCarryTargetLhsRhs"),
@@ -428,7 +428,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0x34,
+        .opcode = 0x34,
     };
     specifications[53] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("SwapFramebuffers"),
@@ -436,7 +436,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 0,
         .required_arguments = { UP2K_ARGUMENT_TYPE_NONE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x35,
+        .opcode = 0x35,
     };
     specifications[54] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("CallRegister"),
@@ -444,7 +444,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40 },
-        .UP2K_Opcode = 0x36,
+        .opcode = 0x36,
     };
     specifications[55] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("CallPointer"),
@@ -452,7 +452,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER },
         .offsets = { 40 },
-        .UP2K_Opcode = 0x37,
+        .opcode = 0x37,
     };
     specifications[56] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("InvisibleFramebufferAddress"),
@@ -460,7 +460,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40 },
-        .UP2K_Opcode = 0x38,
+        .opcode = 0x38,
     };
     specifications[57] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("PollCycleCountHighLow"),
@@ -468,7 +468,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40, 32 },
-        .UP2K_Opcode = 0x39,
+        .opcode = 0x39,
     };
     specifications[58] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("BoolCompareEquals"),
@@ -476,7 +476,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0x3a,
+        .opcode = 0x3a,
     };
     specifications[59] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("BoolCompareNotEquals"),
@@ -484,7 +484,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0x3b,
+        .opcode = 0x3b,
     };
     specifications[60] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("BoolCompareGreater"),
@@ -492,7 +492,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0x3c,
+        .opcode = 0x3c,
     };
     specifications[61] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("BoolCompareGreaterOrEquals"),
@@ -500,7 +500,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0x3d,
+        .opcode = 0x3d,
     };
     specifications[62] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("BoolCompareLess"),
@@ -508,7 +508,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0x3e,
+        .opcode = 0x3e,
     };
     specifications[63] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("BoolCompareLessOrEquals"),
@@ -516,7 +516,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 24, 40 },
-        .UP2K_Opcode = 0x3f,
+        .opcode = 0x3f,
     };
     specifications[64] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("Pop"),
@@ -524,7 +524,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 0,
         .required_arguments = { UP2K_ARGUMENT_TYPE_NONE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x40,
+        .opcode = 0x40,
     };
     specifications[65] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveByteRegisterAddress"),
@@ -532,7 +532,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_ADDRESS_POINTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 0, 40 },
-        .UP2K_Opcode = 0x41,
+        .opcode = 0x41,
     };
     specifications[66] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveByteAddressRegister"),
@@ -540,7 +540,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_ADDRESS_POINTER },
         .offsets = { 40, 0 },
-        .UP2K_Opcode = 0x42,
+        .opcode = 0x42,
     };
     specifications[67] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveByteTargetPointer"),
@@ -548,7 +548,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 40 },
-        .UP2K_Opcode = 0x43,
+        .opcode = 0x43,
     };
     specifications[68] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveBytePointerSource"),
@@ -556,7 +556,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER_POINTER },
         .offsets = { 32, 40 },
-        .UP2K_Opcode = 0x44,
+        .opcode = 0x44,
     };
     specifications[69] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveHalfwordRegisterAddress"),
@@ -564,7 +564,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_ADDRESS_POINTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 0, 40 },
-        .UP2K_Opcode = 0x45,
+        .opcode = 0x45,
     };
     specifications[70] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveHalfwordAddressRegister"),
@@ -572,7 +572,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_ADDRESS_POINTER },
         .offsets = { 40, 0 },
-        .UP2K_Opcode = 0x46,
+        .opcode = 0x46,
     };
     specifications[71] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveHalfwordTargetPointer"),
@@ -580,7 +580,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 40 },
-        .UP2K_Opcode = 0x47,
+        .opcode = 0x47,
     };
     specifications[72] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveHalfwordPointerSource"),
@@ -588,7 +588,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER_POINTER },
         .offsets = { 32, 40 },
-        .UP2K_Opcode = 0x48,
+        .opcode = 0x48,
     };
     specifications[73] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MovePointerSourceOffset"),
@@ -596,7 +596,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_IMMEDIATE, UP2K_ARGUMENT_TYPE_REGISTER_POINTER },
         .offsets = { 32, 0, 40 },
-        .UP2K_Opcode = 0x49,
+        .opcode = 0x49,
     };
     specifications[74] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveBytePointerSourceOffset"),
@@ -604,7 +604,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_IMMEDIATE, UP2K_ARGUMENT_TYPE_REGISTER_POINTER },
         .offsets = { 32, 0, 40 },
-        .UP2K_Opcode = 0x4a,
+        .opcode = 0x4a,
     };
     specifications[75] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveHalfwordPointerSourceOffset"),
@@ -612,7 +612,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_IMMEDIATE, UP2K_ARGUMENT_TYPE_REGISTER_POINTER },
         .offsets = { 32, 0, 40 },
-        .UP2K_Opcode = 0x4b,
+        .opcode = 0x4b,
     };
     specifications[76] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveTargetPointerOffset"),
@@ -620,7 +620,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER, UP2K_ARGUMENT_TYPE_IMMEDIATE, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 0, 40 },
-        .UP2K_Opcode = 0x4c,
+        .opcode = 0x4c,
     };
     specifications[77] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveByteTargetPointerOffset"),
@@ -628,7 +628,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER, UP2K_ARGUMENT_TYPE_IMMEDIATE, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 0, 40 },
-        .UP2K_Opcode = 0x4d,
+        .opcode = 0x4d,
     };
     specifications[78] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("MoveHalfwordTargetPointerOffset"),
@@ -636,7 +636,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 3,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER, UP2K_ARGUMENT_TYPE_IMMEDIATE, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 32, 0, 40 },
-        .UP2K_Opcode = 0x4e,
+        .opcode = 0x4e,
     };
     specifications[79] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("PushImmediate"),
@@ -644,7 +644,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0x4f,
+        .opcode = 0x4f,
     };
     specifications[80] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("Checkpoint"),
@@ -652,7 +652,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0xfff8,
+        .opcode = 0xfff8,
     };
     specifications[81] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("PrintRegister"),
@@ -660,7 +660,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 1,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40 },
-        .UP2K_Opcode = 0xfff9,
+        .opcode = 0xfff9,
     };
     specifications[82] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("DebugBreak"),
@@ -668,7 +668,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 0,
         .required_arguments = { UP2K_ARGUMENT_TYPE_NONE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0xfffa,
+        .opcode = 0xfffa,
     };
     specifications[83] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("AssertPointerImmediate"),
@@ -676,7 +676,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER_POINTER, UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 40, 0 },
-        .UP2K_Opcode = 0xfffb,
+        .opcode = 0xfffb,
     };
     specifications[84] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("AssertRegisterImmediate"),
@@ -684,7 +684,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_IMMEDIATE },
         .offsets = { 40, 0 },
-        .UP2K_Opcode = 0xfffc,
+        .opcode = 0xfffc,
     };
     specifications[85] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("AssertRegisterRegister"),
@@ -692,7 +692,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 2,
         .required_arguments = { UP2K_ARGUMENT_TYPE_REGISTER, UP2K_ARGUMENT_TYPE_REGISTER },
         .offsets = { 40, 32 },
-        .UP2K_Opcode = 0xfffd,
+        .opcode = 0xfffd,
     };
     specifications[86] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("DumpMemory"),
@@ -700,7 +700,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 0,
         .required_arguments = { UP2K_ARGUMENT_TYPE_NONE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0xfffe,
+        .opcode = 0xfffe,
     };
     specifications[87] = (UP2K_OpcodeSpecification){
         .name = UP2K_string_view_from_string("DumpRegisters"),
@@ -708,7 +708,7 @@ UP2K_OpcodeList UP2K_opcode_specifications(void) {
         .argument_count = 0,
         .required_arguments = { UP2K_ARGUMENT_TYPE_NONE },
         .offsets = { 0 },
-        .UP2K_Opcode = 0xffff,
+        .opcode = 0xffff,
     };
     return (UP2K_OpcodeList){
     .specifications = specifications,
