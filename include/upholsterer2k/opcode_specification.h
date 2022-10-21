@@ -10,24 +10,24 @@ extern "C" {
 #include "upholsterer2k/string_view.h"
 
 typedef enum {
-    ARGUMENT_TYPE_NONE,
-    ARGUMENT_TYPE_IMMEDIATE,
-    ARGUMENT_TYPE_ADDRESS_POINTER,
-    ARGUMENT_TYPE_REGISTER,
-    ARGUMENT_TYPE_REGISTER_POINTER,
+    UP2K_ARGUMENT_TYPE_NONE,
+    UP2K_ARGUMENT_TYPE_IMMEDIATE,
+    UP2K_ARGUMENT_TYPE_ADDRESS_POINTER,
+    UP2K_ARGUMENT_TYPE_REGISTER,
+    UP2K_ARGUMENT_TYPE_REGISTER_POINTER,
     // TODO: Difference?
-} ArgumentType;
+} UP2K_ArgumentType;
 
-typedef uint16_t Opcode;
+typedef uint16_t UP2K_Opcode;
 
 typedef struct {
-    StringView name;                   // e.g. "MoveRegisterImmediate"
-    StringView mnemonic;               // e.g. "COPY"
+    UP2K_StringView name;                   // e.g. "MoveRegisterImmediate"
+    UP2K_StringView mnemonic;               // e.g. "COPY"
     size_t argument_count;             // e.g. 2
-    ArgumentType required_arguments[6];// e.g. { Immediate, Register }
+    UP2K_ArgumentType required_arguments[6];// e.g. { Immediate, UP2K_Register }
     uint8_t offsets[6];                // amount to shift the argument to the right (in bits)
-    Opcode opcode;                     // e.g. 0x0000
-} OpcodeSpecification;
+    UP2K_Opcode UP2K_Opcode;                     // e.g. 0x0000
+} UP2K_OpcodeSpecification;
 
 #define MNEMONICS               \
     X(COPY)                     \
@@ -179,7 +179,7 @@ typedef struct {
     X(BoolCompareLessOrEquals, COMP_LE)                        \
     X(Checkpoint, CHECKPOINT)
 
-StringView opcode_to_mnemonic(StringView opcode);
+UP2K_StringView opcode_to_mnemonic(UP2K_StringView UP2K_Opcode);
 
 #ifdef __cplusplus
 }

@@ -25,8 +25,8 @@ static size_t minimum_required_length(WordLiteralType type) {
     }
 }
 
-static bool is_valid_digit(char const c, WordLiteralType base) {
-    switch (base) {
+static bool is_valid_digit(char const c, WordLiteralType UP2K_Base) {
+    switch (UP2K_Base) {
         case DECIMAL:
             return isdigit(c);
         case HEXADECIMAL:
@@ -36,7 +36,7 @@ static bool is_valid_digit(char const c, WordLiteralType base) {
         case UNKNOWN:
             return false;
         default:
-            assert(false && "invalid base");
+            assert(false && "invalid UP2K_Base");
             return false;
     }
 }
@@ -57,8 +57,8 @@ static bool is_escape_sequence_char(char const c) {
     return c == '"' || c == '\\' || c == 't' || c == 'n' || c == 'v' || c == 'f' || c == 'r';
 }
 
-TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants) {
-    TokenVector tokens = token_vector_create();
+UP2K_TokenVector UP2K_tokenize(UP2K_SourceFile const source_file, UP2K_ConstantsMap const* constants) {
+    UP2K_TokenVector tokens = UP2K_token_vector_create();
     if (source_file.source.length == 0) {
         return tokens;
     }
@@ -70,7 +70,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
         switch (*current) {
             case '\n':
                 if (tokens.size == 0 || tokens.data[tokens.size - 1].type != TOKEN_TYPE_NEWLINE) {
-                    token_vector_push(&tokens, (Token){
+                    UP2K_token_vector_push(&tokens, (UP2K_Token){
                         .type = TOKEN_TYPE_NEWLINE,
                         .string_view = {
                             .data = current,
@@ -84,7 +84,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                 current_line_start = current + 1;
                 break;
             case '*':
-                token_vector_push(&tokens, (Token){
+                UP2K_token_vector_push(&tokens, (UP2K_Token){
                     .type = TOKEN_TYPE_ASTERISK,
                     .string_view = {
                         .data = current,
@@ -95,7 +95,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                 });
                 break;
             case ':':
-                token_vector_push(&tokens, (Token){
+                UP2K_token_vector_push(&tokens, (UP2K_Token){
                     .type = TOKEN_TYPE_COLON,
                     .string_view = {
                         .data = current,
@@ -106,7 +106,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                 });
                 break;
             case '.':
-                token_vector_push(&tokens, (Token){
+                UP2K_token_vector_push(&tokens, (UP2K_Token){
                     .type = TOKEN_TYPE_DOT,
                     .string_view = {
                         .data = current,
@@ -117,7 +117,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                 });
                 break;
             case ',':
-                token_vector_push(&tokens, (Token){
+                UP2K_token_vector_push(&tokens, (UP2K_Token){
                     .type = TOKEN_TYPE_COMMA,
                     .string_view = {
                         .data = current,
@@ -128,7 +128,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                 });
                 break;
             case '[':
-                token_vector_push(&tokens, (Token){
+                UP2K_token_vector_push(&tokens, (UP2K_Token){
                     .type = TOKEN_TYPE_LEFT_BRACKET,
                     .string_view = {
                         .data = current,
@@ -139,7 +139,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                 });
                 break;
             case ']':
-                token_vector_push(&tokens, (Token){
+                UP2K_token_vector_push(&tokens, (UP2K_Token){
                     .type = TOKEN_TYPE_RIGHT_BRACKET,
                     .string_view = {
                         .data = current,
@@ -152,7 +152,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
             case '/':
                 ++current;
                 if (current == end || *current != '/') {
-                    error(
+                    UP2K_error(
                         source_file,
                         "'/' expected",
                         line,
@@ -164,7 +164,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                     ++current;
                 }
                 if (current == end) {
-                    error(
+                    UP2K_error(
                         source_file,
                         "comments must end with newline",
                         line,
@@ -182,7 +182,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                     if (*current == '\\') {
                         // escape sequence
                         if (current + 1 == end || !is_escape_sequence_char(*(current + 1))) {
-                            error(
+                            UP2K_error(
                                 source_file,
                                 "invalid escape sequence",
                                 line,
@@ -195,7 +195,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                     ++current;
                 }
                 if (!is_valid_string_literal_char(*current)) {
-                    error(
+                    UP2K_error(
                         source_file,
                         "character not allowed in string literal",
                         line,
@@ -204,7 +204,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                     );
                 }
                 if (current == end || *current != '"') {
-                    error(
+                    UP2K_error(
                         source_file,
                         "unterminated string literal",
                         line,
@@ -213,9 +213,9 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                     );
                 }
                 ++current;
-                token_vector_push(&tokens, (Token){
+                UP2K_token_vector_push(&tokens, (UP2K_Token){
                     .type = TOKEN_TYPE_STRING_LITERAL,
-                    .string_view = string_view_from_pointers(literal_start, current),
+                    .string_view = UP2K_string_view_from_pointers(literal_start, current),
                     .column = (size_t)(literal_start - current_line_start + 1),
                     .line = line,
                 });
@@ -232,18 +232,18 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                     while (current != end && isdigit(*current)) {
                         ++current;
                     }
-                    token_vector_push(&tokens, (Token){
+                    UP2K_token_vector_push(&tokens, (UP2K_Token){
                         .type = TOKEN_TYPE_REGISTER,
-                        .string_view = string_view_from_pointers(register_start, current),
+                        .string_view = UP2K_string_view_from_pointers(register_start, current),
                         .line = line,
                         .column = (size_t)(register_start - current_line_start + 1),
                     });
                     --current;
                 } else if (isdigit(*current)) {
-                    // word literal
+                    // UP2K_Word literal
                     if (current + 1 == end) {
                         // reached EOF
-                        token_vector_push(&tokens, (Token){
+                        UP2K_token_vector_push(&tokens, (UP2K_Token){
                             .type = TOKEN_TYPE_WORD_LITERAL,
                             .string_view = {
                                 .data = current,
@@ -274,15 +274,15 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                         }
                         size_t const literal_length = (size_t)(current - literal_start);
                         if (literal_length < minimum_required_length(word_literal_type)) {
-                            error(
+                            UP2K_error(
                                 source_file,
-                                "end of word literal unexpected",
+                                "end of UP2K_Word literal unexpected",
                                 line,
                                 (size_t)(current - current_line_start + 1),
                                 1
                             );
                         }
-                        token_vector_push(&tokens, (Token){
+                        UP2K_token_vector_push(&tokens, (UP2K_Token){
                             .type = TOKEN_TYPE_WORD_LITERAL,
                             .string_view = {
                                 .data = literal_start,
@@ -299,7 +299,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                     current += 2; // consume '$' and '"'
                     while (current != end && *current != '"') {
                         if (*current < (char)32 || *current > (char)126) {
-                            error(
+                            UP2K_error(
                                 source_file,
                                 "invalid character inside string literal",
                                 line,
@@ -309,7 +309,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                         ++current;
                     }
                     if (current == end) {
-                        error(
+                        UP2K_error(
                             source_file,
                             "unterminated string literal",
                             line,
@@ -319,7 +319,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                     assert(*current == '"');
                     ++current;
                     size_t const identifier_length = (size_t)(current - identifier_start);
-                    token_vector_push(&tokens, (Token){
+                    UP2K_token_vector_push(&tokens, (UP2K_Token){
                             .type = TOKEN_TYPE_IDENTIFIER,
                             .string_view = {
                                 .data = identifier_start,
@@ -330,26 +330,26 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                         });
                     --current;
                 } else if (is_valid_identifier_start_char(*current)) {
-                    // identifier or register constant or word constant
+                    // identifier or register constant or UP2K_Word constant
                     char const * const identifier_start = current;
                     ++current;
                     while (current != end && is_valid_identifier_inner_char(*current)) {
                         ++current;
                     }
-                    StringView const identifier = string_view_from_pointers(identifier_start, current);
+                    UP2K_StringView const identifier = UP2K_string_view_from_pointers(identifier_start, current);
                     bool constant_found;
-                    get_constant_value(
+                    UP2K_get_constant_value(
                         identifier,
                         CONSTANT_TYPE_REGISTER,
                         &constant_found,
                         NULL,
                         constants);
-                    TokenType token_type = TOKEN_TYPE_IDENTIFIER;
+                    UP2K_TokenType token_type = TOKEN_TYPE_IDENTIFIER;
                     if (constant_found) {
                         token_type = TOKEN_TYPE_REGISTER_CONSTANT;
                     }
                     if (!constant_found) {
-                        get_constant_value(
+                        UP2K_get_constant_value(
                             identifier,
                             CONSTANT_TYPE_UNSIGNED_INTEGER,
                             &constant_found,
@@ -359,7 +359,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                             token_type = TOKEN_TYPE_WORD_CONSTANT;
                         }
                     }
-                    token_vector_push(&tokens, (Token){
+                    UP2K_token_vector_push(&tokens, (UP2K_Token){
                         .type = token_type,
                         .string_view = identifier,
                         .line = line,
@@ -367,7 +367,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
                     });
                     --current;
                 } else {
-                    error(
+                    UP2K_error(
                         source_file,
                         "unexpected input",
                         line,
@@ -379,7 +379,7 @@ TokenVector tokenize(SourceFile const source_file, ConstantsMap const* constants
         }
         ++current;
     }
-    token_vector_push(&tokens, (Token){
+    UP2K_token_vector_push(&tokens, (UP2K_Token){
         .type = TOKEN_TYPE_EOF,
         .string_view = {
             .data = NULL,

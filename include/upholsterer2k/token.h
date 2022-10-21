@@ -30,20 +30,20 @@ typedef enum {
 #define X(type) type,
     TOKEN_TYPE_LIST
 #undef X
-} TokenType;
+} UP2K_TokenType;
 
-char const* token_type_to_string(TokenType token_type);
+char const* UP2K_token_type_to_string(UP2K_TokenType token_type);
 
 typedef struct {
-    TokenType type;
-    StringView string_view;
+    UP2K_TokenType type;
+    UP2K_StringView string_view;
     size_t line, column;
-} Token;
+} UP2K_Token;
 
-StringView identifier_from_token(Token const* token);
-StringView string_literal_from_token(Token const* token);
-void word_from_token(Token const* token, bool* out_success, Word* out_result);
-void register_from_token(Token const* token, bool* out_success, Register* out_register);
+UP2K_StringView UP2K_identifier_from_token(UP2K_Token const* token);
+UP2K_StringView UP2K_string_literal_from_token(UP2K_Token const* token);
+void UP2K_word_from_token(UP2K_Token const* token, bool* out_success, UP2K_Word* out_result);
+void UP2K_register_from_token(UP2K_Token const* token, bool* out_success, UP2K_Register* out_register);
 
 #ifdef __cplusplus
 }

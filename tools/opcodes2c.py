@@ -4,10 +4,10 @@ import json
 
 def argument_as_c_enum(argument):
     if "Register" in argument:
-        return "ARGUMENT_TYPE_REGISTER" if argument["Register"][2] != "pointer" else "ARGUMENT_TYPE_REGISTER_POINTER"
+        return "UP2K_ARGUMENT_TYPE_REGISTER" if argument["Register"][2] != "pointer" else "UP2K_ARGUMENT_TYPE_REGISTER_POINTER"
     argument_mappings = {
-        "Immediate": "ARGUMENT_TYPE_IMMEDIATE",
-        "Address": "ARGUMENT_TYPE_ADDRESS_POINTER",
+        "Immediate": "UP2K_ARGUMENT_TYPE_IMMEDIATE",
+        "Address": "UP2K_ARGUMENT_TYPE_ADDRESS_POINTER",
     }
     return argument_mappings[argument]
 
@@ -46,9 +46,9 @@ def main():
 #include "upholsterer2k/opcodes.h"
 #include "upholsterer2k/string_view.h"
 
-OpcodeList opcode_specifications(void) {\n""")
+UP2K_OpcodeList UP2K_opcode_specifications(void) {\n""")
                 out_file.write(f"    size_t const num_opcodes = {num_opcodes};\n")
-                out_file.write("    OpcodeSpecification* specifications = malloc(num_opcodes * sizeof(*specifications));\n")
+                out_file.write("    UP2K_OpcodeSpecification* specifications = malloc(num_opcodes * sizeof(*specifications));\n")
                 for i, opcode in enumerate(data["opcodes"]):
                     argument_count = len(data["opcodes"][opcode]["arguments"])
                     arguments = list()
@@ -60,12 +60,12 @@ OpcodeList opcode_specifications(void) {\n""")
                             offset_accumulator -= 8
                         arguments.append(Argument(argument_as_c_enum(argument), argument_to_usage(data["opcodes"][opcode]["opcode_type"], argument), offset))
                     arguments = sorted(arguments, key=lambda arg: 0 if arg.usage == "ARGUMENT_USAGE_SOURCE" else 1)
-                    out_file.write(f"    specifications[{i}] = (OpcodeSpecification){{\n")
-                    out_file.write(f"        .name = string_view_from_string(\"{opcode}\"),\n")
-                    out_file.write(f"        .mnemonic = opcode_to_mnemonic(string_view_from_string(\"{opcode}\")),\n")
+                    out_file.write(f"    specifications[{i}] = (UP2K_OpcodeSpecification){{\n")
+                    out_file.write(f"        .name = UP2K_string_view_from_string(\"{opcode}\"),\n")
+                    out_file.write(f"        .mnemonic = opcode_to_mnemonic(UP2K_string_view_from_string(\"{opcode}\")),\n")
                     out_file.write(f"        .argument_count = {argument_count},\n")
                     out_file.write(f"        .required_arguments = {{ ")
-                    out_file.write("ARGUMENT_TYPE_NONE" if len(arguments) == 0 else ', '.join(x.arg_type for x in arguments))
+                    out_file.write("UP2K_ARGUMENT_TYPE_NONE" if len(arguments) == 0 else ', '.join(x.arg_type for x in arguments))
                     out_file.write(f" }},\n")
                     out_file.write(f"        .offsets = {{ ")
                     out_file.write("0" if len(arguments) == 0 else ', '.join(str(x.offset) for x in arguments))
@@ -73,14 +73,14 @@ OpcodeList opcode_specifications(void) {\n""")
                     opcode = data["opcodes"][opcode]["opcode"]
                     out_file.write(f"        .opcode = {hex(opcode)},\n")
                     out_file.write(f"    }};\n")
-                out_file.write("""    return (OpcodeList){
+                out_file.write("""    return (UP2K_OpcodeList){
     .specifications = specifications,
     .num_specifications = num_opcodes,
 };
 }
 """)
         except KeyError:
-            sys.stderr.write("Error reading JSON file: An expected key could not be found.\n")
+            sys.stderr.write("UP2K_error reading JSON file: An expected key could not be found.\n")
     except IOError:
         sys.stderr.write(f"IO error. Make sure the input file exists and can be opened.\n")
 

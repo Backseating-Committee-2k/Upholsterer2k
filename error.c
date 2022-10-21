@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <assert.h>
 
-void error(
-    SourceFile const source_file,
+void UP2K_error(
+    UP2K_SourceFile const source_file,
     char const * const message,
     size_t const line,
     size_t const column,
@@ -35,6 +35,6 @@ void error(
     for (size_t i = 1; i < squiggly_length; ++i) {
         fputc('~', stderr);
     }
-    fputs(" error occurred here\n", stderr);
+    fputs(" UP2K_error occurred here\n", stderr);
     exit(EXIT_FAILURE); // no memory cleanup? ¯\_(ツ)_/¯
 }

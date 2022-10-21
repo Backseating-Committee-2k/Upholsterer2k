@@ -9,12 +9,12 @@ extern "C" {
 #include <stdbool.h>
 #include <stdlib.h>
 
-void write_machine_code(ByteVector machine_code, FILE* const file);
+void UP2K_write_machine_code(UP2K_ByteVector machine_code, FILE* const file);
 
-bool bssemble(SourceFile source_file,
+bool UP2K_bssemble(UP2K_SourceFile source_file,
               char const* instruction_map_file_name,
-              ByteVector* out_machine_code,
-              InstructionMapVector* out_instruction_map,
+              UP2K_ByteVector* out_machine_code,
+              UP2K_InstructionMapVector* out_instruction_map,
               char* out_error_message_buffer,
               size_t buffer_size);
 
