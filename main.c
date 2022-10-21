@@ -45,10 +45,6 @@ void read_whole_file(FILE* const file, char** contents, size_t* length) {
     *length = size;
 }
 
-void write_machine_code(ByteVector machine_code, FILE* const file) {
-    fwrite(machine_code.data, sizeof(uint8_t), machine_code.size, file);
-}
-
 void write_instruction_map(InstructionMapVector instruction_map_vector, char const* const file_name) {
     FILE* file = fopen(file_name, "w");
     if (!file) {

@@ -2,6 +2,10 @@
 #include <upholsterer2k/constants.h>
 #include <upholsterer2k/lexer.h>
 
+void write_machine_code(ByteVector const machine_code, FILE* const file) {
+    fwrite(machine_code.data, sizeof(uint8_t), machine_code.size, file);
+}
+
 static void check_opcodes(OpcodeList const opcodes) {
     for (size_t i = 0; i < opcodes.num_specifications; ++i) {
         OpcodeSpecification const* const specification = &opcodes.specifications[i];

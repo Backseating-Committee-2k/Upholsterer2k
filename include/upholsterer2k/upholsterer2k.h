@@ -9,6 +9,8 @@ extern "C" {
 #include <stdbool.h>
 #include <stdlib.h>
 
+void write_machine_code(ByteVector machine_code, FILE* const file);
+
 bool bssemble(SourceFile source_file,
               char const* instruction_map_file_name,
               ByteVector* out_machine_code,
