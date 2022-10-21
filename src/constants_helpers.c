@@ -18,10 +18,12 @@ void UP2K_fill_constants_map(UP2K_ConstantsMap* constants_map) {
                     abbreviation,
                     &UP2K_g_constants[j]
                 );
+                (void)did_not_exist_before; // simulate [[maybe_unused]]
                 assert(did_not_exist_before && "constant abbreviations must be unique");
                 break;
             }
         }
+        (void)found; // simulate [[maybe_unused]]
         assert(found && "every constant abbreviation needs a corresponding constant");
     }
 }
@@ -50,6 +52,7 @@ void UP2K_get_constant(UP2K_StringView abbreviation, bool* out_found, UP2K_Const
             return;
         }
     }
+    (void)constant; // simulate [[maybe_unused]]
     assert(constant != NULL && "constant with given name does not exist");
 }
 

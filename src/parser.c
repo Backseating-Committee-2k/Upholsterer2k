@@ -230,9 +230,33 @@ static UP2K_OpcodeSpecification const* find_opcode(UP2K_Token const * const mnem
 }
 
 static void emit_instruction(UP2K_Token const * const mnemonic, ArgumentVector const arguments) {
+    fprintf(
+        stderr,
+        "should emit instruction for mnemonic %.*s with %zu arguments.\n",
+        (int)mnemonic->string_view.length,
+        mnemonic->string_view.data,
+        arguments.size
+    );
+    for (size_t i = 0; i < arguments.size; ++i) {
+        fprintf(
+            stderr,
+            "\t%.*s\n",
+            (int)arguments.data[i].first_token->string_view.length,
+            arguments.data[i].first_token->string_view.data
+        );
+    }
+
     UP2K_OpcodeSpecification const * const opcode_specification = find_opcode(mnemonic, arguments);
     if (opcode_specification == NULL) {
         UP2K_error_on_token("unknown instruction or invalid arguments", mnemonic);
+    } else {
+        fprintf(
+            stderr,
+            "\tfound matching UP2K_Opcode: %.*s (%#.04x)\n",
+            (int)opcode_specification->name.length,
+            opcode_specification->name.data,
+            opcode_specification->opcode
+        );
     }
 
     UP2K_Instruction instruction = ((UP2K_Instruction)opcode_specification->opcode) << 48;
@@ -267,6 +291,12 @@ static void emit_instruction(UP2K_Token const * const mnemonic, ArgumentVector c
                     instruction |= 0xDEADC0DE; // placeholder
                 } else {
                     UP2K_word_from_token(arguments.data[i].first_token + 1, &success, &word_result);
+                    fprintf(
+                        stderr,
+                        "%.*s\n",
+                        (int)(arguments.data[i].first_token + 1)->string_view.length,
+                        (arguments.data[i].first_token + 1)->string_view.data
+                    );
                     if (!success) {
                         UP2K_error_on_token("invalid pointer value", arguments.data[i].first_token + 1);
                     }
@@ -309,6 +339,7 @@ static void emit_instruction(UP2K_Token const * const mnemonic, ArgumentVector c
                         &constant_value,
                         state.constants);
                     assert(constant_found && "look-up happened before and therefore now should be found");
+                    fprintf(stderr, "\treplaced numeric constant with value %"PRIu64"\n", constant_value);
                     instruction |= (UP2K_Instruction)constant_value;
                 } else {
                     assert(false && "unreachable");
@@ -339,6 +370,7 @@ static void emit_instruction(UP2K_Token const * const mnemonic, ArgumentVector c
                         &constant_value,
                         state.constants);
                     assert(constant_found && "look-up happened before and thefeore should not fail here");
+                    fprintf(stderr, "\treplaced register constant with a value of %"PRIu64"\n", constant_value);
                     instruction |= ((UP2K_Instruction)constant_value) << opcode_specification->offsets[i];
                 } else {
                     assert(false && "unreachable");
@@ -365,6 +397,7 @@ static void emit_instruction(UP2K_Token const * const mnemonic, ArgumentVector c
                         &constant_value,
                         state.constants);
                     assert(constant_found && "look-up happened before and thefeore should not fail here");
+                    fprintf(stderr, "\treplaced register constant with a value of %"PRIu64"\n", constant_value);
                     instruction |= ((UP2K_Instruction)constant_value) << opcode_specification->offsets[i];
                 } else {
                     assert(false && "unreachable");
@@ -516,6 +549,7 @@ static void parse_word_literal(void) {
     UP2K_word_from_token(current(), &success, &result);
     assert(success); // lexer should only UP2K_tokenize UP2K_Word literals if they are valid
     emit_u32(result);
+    fprintf(stderr, "should emit UP2K_Word literal: %"PRIu32"\n", result);
     next();
 }
 
@@ -599,6 +633,7 @@ static void parse_string_literal(void) {
     if (current()->type != TOKEN_TYPE_STRING_LITERAL) {
         UP2K_error_on_current_token("string literal expected");
     }
+    fprintf(stderr, "should emit string literal: %.*s\n", (int)current()->string_view.length, current()->string_view.data);
     emit_quoted_escaped_string(current()->string_view);
     next();
     if (current()->type != TOKEN_TYPE_NEWLINE) {
@@ -651,6 +686,17 @@ UP2K_ByteVector UP2K_parse(
         }
         next();
     }
+    for (size_t i = 0; i < state.labels.capacity; ++i) {
+        if (label_map_is_index_occupied(&state.labels, i)) {
+            fprintf(
+                stderr,
+                "%.*s @ 0x%08"PRIX32"\n",
+                (int)state.labels.data[i].key.length,
+                state.labels.data[i].key.data,
+                state.labels.data[i].value
+            );
+        }
+    }
 
     bool entry_point_found;
     uint64_t entry_point;
@@ -680,6 +726,12 @@ UP2K_ByteVector UP2K_parse(
             &constant_value,
             state.constants);
         if (found_constant) {
+            fprintf(
+                stderr,
+                "Replacing value at %zu with constant %"PRIx64"\n",
+                placeholder->offset,
+                constant_value
+            );
             overwrite_u32(placeholder->offset, (UP2K_Word)constant_value);
             continue;
         }
@@ -689,6 +741,12 @@ UP2K_ByteVector UP2K_parse(
             UP2K_error_on_token("unknown label", placeholder->label_token);
         } else {
             assert(state.machine_code.size > placeholder->offset && "invalid offset");
+            fprintf(
+                stderr,
+                "Replacing label at %zu with %"PRIx32"\n",
+                placeholder->offset,
+                *offset + (UP2K_Address)entry_point
+            );
             overwrite_u32(placeholder->offset, *offset + (UP2K_Address)entry_point);
         }
     }
